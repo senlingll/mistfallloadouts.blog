@@ -83,6 +83,19 @@ def write_root_files() -> None:
         "/classes /classes/ 301\n/builds /builds/ 301\n/guide /guide/ 301\n/about /about/ 301\n/contact /contact/ 301\n/privacy-policy /privacy-policy/ 301\n/terms-of-service /terms-of-service/ 301\n",
         encoding="utf-8",
     )
+    (BUILD_DIR / "_worker.js").write_text(
+        "export default {\n"
+        "  async fetch(request, env) {\n"
+        "    const url = new URL(request.url);\n"
+        "    if (url.hostname === 'www.mistfallloadouts.blog') {\n"
+        "      url.hostname = 'mistfallloadouts.blog';\n"
+        "      return Response.redirect(url.toString(), 301);\n"
+        "    }\n"
+        "    return env.ASSETS.fetch(request);\n"
+        "  }\n"
+        "};\n",
+        encoding="utf-8",
+    )
 
 
 def build_site() -> None:
