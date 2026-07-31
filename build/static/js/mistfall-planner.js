@@ -3,6 +3,8 @@
   if (!form) return;
 
   const copyButton = form.querySelector("[data-copy]");
+  const copyLabel = copyButton?.dataset.copyLabel || "Copy";
+  const copiedLabel = copyButton?.dataset.copiedLabel || "Copied";
   const output = {
     summary: document.querySelector("[data-summary]"),
     tags: document.querySelector("[data-tags]"),
@@ -63,8 +65,8 @@
     const text = [output.summary.textContent, output.tags.textContent, output.stats.textContent, output.route.textContent].join("\n");
     try {
       await navigator.clipboard.writeText(text);
-      copyButton.textContent = "Copied";
-      setTimeout(() => { copyButton.textContent = "Copy"; }, 1200);
+      copyButton.textContent = copiedLabel;
+      setTimeout(() => { copyButton.textContent = copyLabel; }, 1200);
     } catch (error) {
       output.tip.textContent = `${output.tip.textContent} Copy is unavailable in this browser.`;
     }

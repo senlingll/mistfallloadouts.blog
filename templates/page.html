@@ -65,8 +65,8 @@
         </select>
       </label>
       <div class="tool-actions">
-        <button type="reset" class="button secondary">{{ t.reset }}</button>
-        <button type="button" class="button primary" data-copy>{{ t.copy }}</button>
+        <button type="reset" class="button secondary">{{ t["reset"] }}</button>
+        <button type="button" class="button primary" data-copy data-copy-label="{{ t['copy'] }}" data-copied-label="{{ t['copied'] }}">{{ t["copy"] }}</button>
       </div>
     </form>
     <article class="result-card" data-result aria-live="polite">
