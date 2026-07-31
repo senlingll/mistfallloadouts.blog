@@ -19,6 +19,16 @@ def clean_build_dir() -> None:
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def clean_generated_text(text: str) -> str:
+    """
+    清理生成文本中的行尾空格并保留文件结尾换行。
+
+    :param text: 原始生成文本
+    :return: str，清理后的文本
+    """
+    return "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
+
+
 def save_route(path: str, html: str) -> None:
     """
     将路由 HTML 保存为 Cloudflare Pages 可发布的静态文件。
@@ -30,7 +40,7 @@ def save_route(path: str, html: str) -> None:
     relative = path.strip("/")
     output_dir = BUILD_DIR / relative if relative else BUILD_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
-    (output_dir / "index.html").write_text(html, encoding="utf-8")
+    (output_dir / "index.html").write_text(clean_generated_text(html), encoding="utf-8")
 
 
 def copy_static_assets() -> None:
@@ -114,7 +124,7 @@ def build_site() -> None:
                     raise RuntimeError(f"Build failed for {route}: {response.status_code}")
                 save_route(route, response.data.decode("utf-8"))
         response = client.get("/missing-page/")
-        (BUILD_DIR / "404.html").write_text(response.data.decode("utf-8"), encoding="utf-8")
+        (BUILD_DIR / "404.html").write_text(clean_generated_text(response.data.decode("utf-8")), encoding="utf-8")
     copy_static_assets()
     write_root_files()
 
