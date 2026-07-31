@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mistfallloadouts.blog/sitemap.xml

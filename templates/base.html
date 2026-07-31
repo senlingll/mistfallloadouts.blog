@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ t.meta_title }}</title>
+  <meta name="description" content="{{ t.meta_description }}">
+  <meta name="keywords" content="{{ t.meta_keywords }}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% for code, url in alternate_urls.items() %}
+  <link rel="alternate" hreflang="{{ code }}" href="{{ url }}">
+  {% endfor %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ t.meta_title }}">
+  <meta property="og:description" content="{{ t.meta_description }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:site_name" content="Mistfall Loadouts">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mistfall.css') }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Mistfall Loadouts",
+    "url": "{{ base_url }}/",
+    "inLanguage": "{{ locale }}",
+    "description": "{{ t.meta_description }}"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ '/' if locale == 'en' else '/' ~ locale ~ '/' }}" aria-label="Mistfall Loadouts">
+      <span class="brand-sigil" aria-hidden="true">ML</span>
+      <span>Mistfall <b>Loadouts</b></span>
+    </a>
+    <nav aria-label="Primary navigation">
+      {% for key, url, label in nav %}
+      <a href="{{ url }}">{{ label }}</a>
+      {% endfor %}
+    </nav>
+    <div class="language-menu">
+      <button type="button" aria-label="Language">{{ locale_label }}</button>
+      <div>
+        {% for item in languages %}
+        <a href="{{ item.url }}" aria-current="{{ 'page' if item.active else 'false' }}">{{ item.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </header>
+  {% block content %}{% endblock %}
+  <footer class="site-footer">
+    <div>
+      <strong>Mistfall Loadouts</strong>
+      <p>{{ t.footer_disclaimer }}</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <a href="{{ footer_links.about }}">{{ t.about_title }}</a>
+      <a href="{{ footer_links.contact }}">{{ t.contact_title }}</a>
+      <a href="{{ footer_links.privacy }}">{{ t.privacy_title }}</a>
+      <a href="{{ footer_links.terms }}">{{ t.terms_title }}</a>
+    </nav>
+  </footer>
+  <script src="{{ url_for('static', filename='js/mistfall-planner.js') }}"></script>
+</body>
+</html>

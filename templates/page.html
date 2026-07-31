@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+  {% if page_key == "index" %}
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">{{ t.hero_eyebrow }}</p>
+      <h1>{{ t.hero_title }}</h1>
+      <p class="lede">{{ t.hero_lede }}</p>
+      <p class="source-note">{{ t.hero_note }}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#planner">{{ t.nav_tool }}</a>
+        <a class="button secondary" href="{{ nav[1][1] }}">{{ t.nav_classes }}</a>
+      </div>
+    </div>
+    <div class="signal-board" aria-label="Mistfall Hunter planning signals">
+      <div><span>238k</span><small>Similarweb 28d main-term window</small></div>
+      <div><span>KD 24</span><small>Low-difficulty launch query</small></div>
+      <div><span>2026-07-31</span><small>Research window</small></div>
+    </div>
+  </section>
+
+  <section id="planner" class="planner-section">
+    <div class="section-head">
+      <p class="eyebrow">{{ t.tool_title }}</p>
+      <h2>{{ t.title }}</h2>
+      <p>{{ t.tool_intro }}</p>
+    </div>
+    <form class="planner-grid" data-planner>
+      <label>{{ t.class_label }}
+        <select name="classFocus">
+          <option value="vanguard">{{ t.class_vanguard }}</option>
+          <option value="seeker">{{ t.class_seeker }}</option>
+          <option value="arcanist">{{ t.class_arcanist }}</option>
+          <option value="warden">{{ t.class_warden }}</option>
+        </select>
+      </label>
+      <label>{{ t.role_label }}
+        <select name="role">
+          <option value="solo">{{ t.role_solo }}</option>
+          <option value="team">{{ t.role_team }}</option>
+          <option value="boss">{{ t.role_boss }}</option>
+        </select>
+      </label>
+      <label>{{ t.risk_label }}
+        <select name="risk">
+          <option value="safe">{{ t.risk_safe }}</option>
+          <option value="balanced" selected>{{ t.risk_balanced }}</option>
+          <option value="greedy">{{ t.risk_greedy }}</option>
+        </select>
+      </label>
+      <label>{{ t.weapon_label }}
+        <select name="weapon">
+          <option value="melee">{{ t.weapon_melee }}</option>
+          <option value="ranged">{{ t.weapon_ranged }}</option>
+          <option value="hybrid" selected>{{ t.weapon_hybrid }}</option>
+        </select>
+      </label>
+      <label>{{ t.phase_label }}
+        <select name="phase">
+          <option value="early">{{ t.phase_early }}</option>
+          <option value="mid" selected>{{ t.phase_mid }}</option>
+          <option value="late">{{ t.phase_late }}</option>
+        </select>
+      </label>
+      <div class="tool-actions">
+        <button type="reset" class="button secondary">{{ t.reset }}</button>
+        <button type="button" class="button primary" data-copy>{{ t.copy }}</button>
+      </div>
+    </form>
+    <article class="result-card" data-result aria-live="polite">
+      <h2>{{ t.result_title }}</h2>
+      <p data-summary></p>
+      <dl>
+        <div><dt>{{ t.result_tags }}</dt><dd data-tags></dd></div>
+        <div><dt>{{ t.result_stats }}</dt><dd data-stats></dd></div>
+        <div><dt>{{ t.result_route }}</dt><dd data-route></dd></div>
+        <div><dt>{{ t.result_tip }}</dt><dd data-tip></dd></div>
+      </dl>
+    </article>
+  </section>
+  {% else %}
+  <section class="legal-hero">
+    <p class="eyebrow">Mistfall Hunter</p>
+    <h1>{{ t.title }}</h1>
+    <p>{{ t.hero_lede }}</p>
+  </section>
+  {% endif %}
+
+  <section id="classes" class="content-section">
+    <div class="section-head">
+      <p class="eyebrow">{{ t.nav_classes }}</p>
+      <h2>{{ t.classes_title }}</h2>
+      <p>{{ t.classes_intro }}</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Best fit</th><th>Strength</th><th>Watch out</th></tr></thead>
+        <tbody>
+          {% for row in class_rows %}
+          <tr><td>{{ row.key|title }}</td><td>{{ row.fit }}</td><td>{{ row.strength }}</td><td>{{ row.watch }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="builds" class="content-section alt">
+    <div class="section-head">
+      <p class="eyebrow">{{ t.nav_builds }}</p>
+      <h2>{{ t.builds_title }}</h2>
+      <p>{{ t.builds_intro }}</p>
+    </div>
+    <div class="card-grid">
+      {% for item in build_patterns %}
+      <article>
+        <h3>{{ item.name }}</h3>
+        <p><strong>Best for:</strong> {{ item.best }}</p>
+        <p><strong>Priorities:</strong> {{ item.priorities }}</p>
+        <p><strong>Avoid:</strong> {{ item.mistake }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="guide" class="content-section">
+    <div class="section-head">
+      <p class="eyebrow">{{ t.nav_guide }}</p>
+      <h2>{{ t.guide_title }}</h2>
+      <p>{{ t.guide_intro }}</p>
+    </div>
+    <ol class="steps">
+      <li>Pick the closest class identity before changing weapon style.</li>
+      <li>Choose the run role that matches the party's actual job split.</li>
+      <li>Keep risk balanced until your extraction path is repeatable.</li>
+      <li>Revisit the planner after patch notes, weapon tuning, or new community tests.</li>
+    </ol>
+    <div class="data-note">
+      <h3>{{ t.data_title }}</h3>
+      <p>{{ t.data_text }}</p>
+    </div>
+    <div class="deep-guide">
+      <h3>Loadout decision method</h3>
+      <p>A useful Mistfall Hunter loadout starts with the job of the run, not with the flashiest weapon. If the goal is a steady extraction, the first question is how the build leaves a bad room, resets a fight, or protects the player who is carrying important loot. If the goal is boss pressure, the loadout can accept more risk, but it still needs one defensive layer and a clear retreat condition.</p>
+      <p>For solo runs, the planner weights mobility and recovery higher because a solo player has no teammate to stabilize a mistake. A solo Vanguard should avoid slow greed routes unless the exit path is already mapped. A solo Seeker can scout more safely, but should not turn every contact into a fight. A solo Arcanist needs cooldown discipline, and a solo Warden needs enough damage to avoid being trapped in long trades.</p>
+      <p>For team runs, role overlap is the common mistake. Two players chasing the same burst window can leave the group without scouting, sustain, or a safe reset. The stronger party usually has one player calling routes, one player controlling pressure, and one player protecting recovery windows. The planner describes these jobs in plain language so players can adjust even when exact patch values change.</p>
+      <p>Weapon style matters because range changes the timing of mistakes. Melee loadouts need a way to break contact or survive the first counterattack. Ranged loadouts need a plan when enemies close distance. Hybrid loadouts are often safest during launch week because they let players test rooms, bosses, and extraction routes without committing to one narrow damage pattern.</p>
+      <p>Risk level should change after evidence, not mood. Safe is best when learning maps, testing class skills, or protecting rare loot. Balanced is the default for repeatable farming because it includes one objective and one exit plan. Greedy makes sense only when the party has already scouted the path, knows the enemy pattern, and can leave without turning every encounter into a full fight.</p>
+      <p>Progress stage changes the answer. Early-game builds should avoid rare dependencies and focus on consistent recovery. Mid-game builds can specialize, but should still keep one flexible slot. Late-game builds can chase boss pressure or high-value routes, yet they need to be reviewed after each patch because class tuning, weapon changes, and encounter adjustments can quickly change the best loadout.</p>
+      <p>This is why the planner avoids false precision. The best launch-week Mistfall Hunter build advice is a decision framework: choose the class job, match the weapon to the run role, set a risk boundary, and update the loadout when reliable tests arrive. That approach gives players something useful today without pretending that every hidden number is already settled.</p>
+      <p>When comparing two Mistfall Hunter loadouts, write down the failure that each build prevents. A defensive setup may prevent a lost extraction, while an aggressive setup may prevent a boss fight from dragging into a dangerous room reset. The better build is the one that prevents the failure most likely to end the specific run you are planning, not the one that looks strongest in a generic tier list.</p>
+      <p>After a few runs, keep a simple note beside each build: class, weapon style, objective, death cause, extraction result, and one change to test next. That small record is more useful than copying an early meta claim without context, because it separates map knowledge, party coordination, and actual loadout weakness. The planner works best when players use it as a repeatable checklist, then replace assumptions with evidence from their own sessions.</p>
+    </div>
+  </section>
+
+  <section id="faq" class="content-section faq-section">
+    <div class="section-head">
+      <p class="eyebrow">{{ t.nav_faq }}</p>
+      <h2>{{ t.faq_title }}</h2>
+    </div>
+    {% for question, answer in faq_items %}
+    <details {% if loop.first %}open{% endif %}>
+      <summary>{{ question }}</summary>
+      <p>{{ answer }}</p>
+    </details>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}
