@@ -29,6 +29,40 @@ def clean_generated_text(text: str) -> str:
     return "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
 
 
+def favicon_bytes() -> bytes:
+    """
+    生成一个简单的 16x16 ICO 图标文件内容。
+
+    :return: bytes，ICO 二进制内容
+    """
+    width = 16
+    height = 16
+    pixel_data = bytes((112, 210, 118, 255) * width * height)
+    mask_data = b"\x00" * (4 * height)
+    dib_header = (
+        (40).to_bytes(4, "little")
+        + width.to_bytes(4, "little", signed=True)
+        + (height * 2).to_bytes(4, "little", signed=True)
+        + (1).to_bytes(2, "little")
+        + (32).to_bytes(2, "little")
+        + (0).to_bytes(4, "little")
+        + len(pixel_data).to_bytes(4, "little")
+        + (0).to_bytes(4, "little", signed=True)
+        + (0).to_bytes(4, "little", signed=True)
+        + (0).to_bytes(4, "little")
+        + (0).to_bytes(4, "little")
+    )
+    image = dib_header + pixel_data + mask_data
+    directory = (
+        bytes([width, height, 0, 0])
+        + (1).to_bytes(2, "little")
+        + (32).to_bytes(2, "little")
+        + len(image).to_bytes(4, "little")
+        + (22).to_bytes(4, "little")
+    )
+    return b"\x00\x00\x01\x00\x01\x00" + directory + image
+
+
 def save_route(path: str, html: str) -> None:
     """
     将路由 HTML 保存为 Cloudflare Pages 可发布的静态文件。
@@ -89,6 +123,7 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "ads.txt").write_text("", encoding="utf-8")
+    (BUILD_DIR / "favicon.ico").write_bytes(favicon_bytes())
     (BUILD_DIR / "_redirects").write_text(
         "/classes /classes/ 301\n/builds /builds/ 301\n/guide /guide/ 301\n/about /about/ 301\n/contact /contact/ 301\n/privacy-policy /privacy-policy/ 301\n/terms-of-service /terms-of-service/ 301\n",
         encoding="utf-8",
