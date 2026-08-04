@@ -122,7 +122,10 @@ def write_root_files() -> None:
         f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players choose launch-week Mistfall Hunter loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-07-31\n",
         encoding="utf-8",
     )
-    (BUILD_DIR / "ads.txt").write_text("", encoding="utf-8")
+    (BUILD_DIR / "ads.txt").write_text(
+        "google.com, pub-9042195580058659, DIRECT, f08c47fec0942fa0\n",
+        encoding="utf-8",
+    )
     (BUILD_DIR / "favicon.ico").write_bytes(favicon_bytes())
     (BUILD_DIR / "_redirects").write_text(
         "/classes /classes/ 301\n/builds /builds/ 301\n/guide /guide/ 301\n/about /about/ 301\n/contact /contact/ 301\n/privacy-policy /privacy-policy/ 301\n/terms-of-service /terms-of-service/ 301\n",
