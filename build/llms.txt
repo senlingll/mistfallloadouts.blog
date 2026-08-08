@@ -6,4 +6,5 @@ Independent Mistfall Hunter loadout planner, class guide, and build decision hub
 - Classes: https://mistfallloadouts.blog/classes/
 - Builds: https://mistfallloadouts.blog/builds/
 - Guide: https://mistfallloadouts.blog/guide/
+- Price guide: https://mistfallloadouts.blog/mistfall-hunter-price/
 - Contact: https://mistfallloadouts.blog/contact/

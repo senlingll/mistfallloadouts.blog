@@ -11,8 +11,8 @@
   <meta name="keywords" content="{{ t.meta_keywords }}">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="{{ canonical_url }}">
-  {% for code, url in alternate_urls.items() %}
-  <link rel="alternate" hreflang="{{ code }}" href="{{ url }}">
+  {% for code in alternate_urls %}
+  <link rel="alternate" hreflang="{{ code }}" href="{{ alternate_urls[code] }}">
   {% endfor %}
   <meta property="og:type" content="website">
   <meta property="og:title" content="{{ t.meta_title }}">
@@ -20,7 +20,14 @@
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:site_name" content="Mistfall Loadouts">
   <meta name="twitter:card" content="summary">
+  {% if page_image_url %}
+  <meta property="og:image" content="{{ page_image_url }}">
+  <meta name="twitter:image" content="{{ page_image_url }}">
+  {% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/mistfall.css') }}">
+  {% if article_schema %}
+  <script type="application/ld+json">{{ article_schema|tojson }}</script>
+  {% else %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -31,6 +38,7 @@
     "description": "{{ t.meta_description }}"
   }
   </script>
+  {% endif %}
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
       c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -44,13 +52,13 @@
       <span class="brand-sigil" aria-hidden="true">ML</span>
       <span>Mistfall <b>Loadouts</b></span>
     </a>
-    <nav aria-label="Primary navigation">
+    <nav aria-label="{{ t['primary_nav_label'] }}">
       {% for key, url, label in nav %}
       <a href="{{ url }}">{{ label }}</a>
       {% endfor %}
     </nav>
     <div class="language-menu">
-      <button type="button" aria-label="Language">{{ locale_label }}</button>
+      <button type="button" aria-label="{{ t['language_label'] }}">{{ locale_label }}</button>
       <div>
         {% for item in languages %}
         <a href="{{ item.url }}" aria-current="{{ 'page' if item.active else 'false' }}">{{ item.label }}</a>
@@ -67,7 +75,7 @@
       <strong>Mistfall Loadouts</strong>
       <p>{{ t.footer_disclaimer }}</p>
     </div>
-    <nav aria-label="Footer navigation">
+    <nav aria-label="{{ t['footer_nav_label'] }}">
       <a href="{{ footer_links.about }}">{{ t.about_title }}</a>
       <a href="{{ footer_links.contact }}">{{ t.contact_title }}</a>
       <a href="{{ footer_links.privacy }}">{{ t.privacy_title }}</a>
@@ -76,7 +84,7 @@
   </footer>
   <script src="{{ url_for('static', filename='js/mistfall-planner.js') }}"></script>
 
-<section class="native-ad-slot" aria-label="Advertisement">
+<section class="native-ad-slot" aria-label="{{ t['advertisement_label'] }}">
   <script async="async" data-cfasync="false" src="https://pl30615736.effectivecpmnetwork.com/02b9c3e59febc0da64dc339afbfef51/invoke.js"></script>
   <div id="container-02b9c3e59febc0da64dc339afbfef51"></div>
 </section>

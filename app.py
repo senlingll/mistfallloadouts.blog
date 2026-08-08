@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 
 from flask import Flask, abort, render_template
 
+from price_guide import PRICE_GUIDES
 
 app = Flask(__name__)
 
@@ -128,7 +129,7 @@ TRANSLATIONS: Dict[str, Dict[str, str]] = {
         "nav_classes": "Clases",
         "nav_builds": "Builds",
         "nav_guide": "Gu\u00eda",
-        "nav_faq": "FAQ",
+        "nav_faq": "Preguntas frecuentes",
         "hero_eyebrow": "Planificaci\u00f3n de lanzamiento",
         "hero_title": "Loadouts de Mistfall Hunter para clases, riesgo y extracci\u00f3n",
         "hero_lede": "Elige rol, arma y nivel de riesgo para obtener una direcci\u00f3n pr\u00e1ctica de loadout antes de entrar a una partida.",
@@ -175,7 +176,7 @@ TRANSLATIONS: Dict[str, Dict[str, str]] = {
         "guide_intro": "Funciona como lista de decisi\u00f3n. Elige el estilo m\u00e1s cercano, lee los costes y ajusta cuando haya parches o pruebas fiables.",
         "data_title": "Datos y vigencia",
         "data_text": "Sitio creado para la ventana de b\u00fasqueda del 31 de julio de 2026. Google Trends mostr\u00f3 demanda activa en EE. UU. y Similarweb report\u00f3 demanda fuerte de 28 d\u00edas.",
-        "faq_title": "FAQ de loadouts de Mistfall Hunter",
+        "faq_title": "Preguntas frecuentes sobre loadouts de Mistfall Hunter",
         "about_title": "Sobre Mistfall Loadouts",
         "about_text": "Mistfall Loadouts es un sitio independiente para planificar builds, comparar clases y preparar rutas con supuestos claros.",
         "privacy_title": "Pol\u00edtica de privacidad",
@@ -208,7 +209,7 @@ TRANSLATIONS: Dict[str, Dict[str, str]] = {
         "nav_classes": "\u30af\u30e9\u30b9",
         "nav_builds": "\u30d3\u30eb\u30c9",
         "nav_guide": "\u30ac\u30a4\u30c9",
-        "nav_faq": "FAQ",
+        "nav_faq": "よくある質問",
         "hero_eyebrow": "\u30ed\u30fc\u30f3\u30c1\u9031\u306e\u30d3\u30eb\u30c9\u8a08\u753b",
         "hero_title": "\u30af\u30e9\u30b9\u3001\u30ea\u30b9\u30af\u3001\u62bd\u51fa\u76ee\u6a19\u3067\u9078\u3076 Mistfall Hunter \u30ed\u30fc\u30c9\u30a2\u30a6\u30c8",
         "hero_lede": "\u5f79\u5272\u3001\u6b66\u5668\u50be\u5411\u3001\u30ea\u30b9\u30af\u3092\u9078\u3073\u3001\u51fa\u6483\u524d\u306b\u5b9f\u7528\u7684\u306a\u30ed\u30fc\u30c9\u30a2\u30a6\u30c8\u65b9\u91dd\u3092\u78ba\u8a8d\u3067\u304d\u307e\u3059\u3002",
@@ -254,8 +255,8 @@ TRANSLATIONS: Dict[str, Dict[str, str]] = {
         "guide_title": "\u51fa\u6483\u524d\u306e\u4f7f\u3044\u65b9",
         "guide_intro": "\u307e\u305a\u8fd1\u3044\u30b9\u30bf\u30a4\u30eb\u3092\u9078\u3073\u3001\u30c8\u30ec\u30fc\u30c9\u30aa\u30d5\u3092\u8aad\u307f\u3001\u30d1\u30c3\u30c1\u3084\u691c\u8a3c\u30c7\u30fc\u30bf\u306b\u5408\u308f\u305b\u3066\u8abf\u6574\u3057\u307e\u3059\u3002",
         "data_title": "\u30c7\u30fc\u30bf\u3068\u9bae\u5ea6\u30e1\u30e2",
-        "data_text": "2026\u5e747\u670831\u65e5\u306e\u691c\u7d22\u72b6\u6cc1\u3092\u3082\u3068\u306b\u4f5c\u6210\u3057\u307e\u3057\u305f\u3002Google Trends \u3068 Similarweb \u306e\u9700\u8981\u3092\u78ba\u8a8d\u3057\u3001\u6b63\u78ba\u306a\u30b2\u30fc\u30e0\u5185\u6570\u5024\u304c\u78ba\u8a8d\u3055\u308c\u308b\u307e\u3067\u306f\u65b9\u91dd\u3068\u3057\u3066\u6271\u3044\u307e\u3059\u3002",
-        "faq_title": "Mistfall Hunter \u30ed\u30fc\u30c9\u30a2\u30a6\u30c8 FAQ",
+        "data_text": "2026\u5e747\u670831\u65e5\u306e\u691c\u7d22\u72b6\u6cc1\u3092\u3082\u3068\u306b\u4f5c\u6210\u3057\u307e\u3057\u305f\u3002\u30c8\u30ec\u30f3\u30c9\u8abf\u67fb\u3068 Similarweb \u306e\u9700\u8981\u3092\u78ba\u8a8d\u3057\u3001\u6b63\u78ba\u306a\u30b2\u30fc\u30e0\u5185\u6570\u5024\u304c\u78ba\u8a8d\u3055\u308c\u308b\u307e\u3067\u306f\u65b9\u91dd\u3068\u3057\u3066\u6271\u3044\u307e\u3059\u3002",
+        "faq_title": "Mistfall Hunter \u30ed\u30fc\u30c9\u30a2\u30a6\u30c8\u306e\u3088\u304f\u3042\u308b\u8cea\u554f",
         "about_title": "Mistfall Loadouts \u306b\u3064\u3044\u3066",
         "about_text": "Mistfall Hunter \u306e\u30d3\u30eb\u30c9\u5224\u65ad\u3001\u30af\u30e9\u30b9\u6bd4\u8f03\u3001\u30eb\u30fc\u30c8\u6e96\u5099\u3092\u652f\u63f4\u3059\u308b\u72ec\u7acb\u30d5\u30a1\u30f3\u30b5\u30a4\u30c8\u3067\u3059\u3002",
         "privacy_title": "\u30d7\u30e9\u30a4\u30d0\u30b7\u30fc\u30dd\u30ea\u30b7\u30fc",
@@ -290,7 +291,8 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "nav_tool": "Planificateur",
             "nav_classes": "Classes",
             "nav_builds": "Builds",
-            "nav_guide": "Guide",
+            "nav_guide": "Conseils",
+            "nav_faq": "Questions fréquentes",
             "hero_eyebrow": "Planification de la semaine de lancement",
             "hero_title": "Loadouts Mistfall Hunter par classe, risque et extraction",
             "hero_lede": "Choisissez le r\u00f4le, l'arme et le niveau de risque pour obtenir une direction pratique avant la sortie.",
@@ -337,7 +339,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "guide_intro": "Choisissez le style le plus proche, lisez les compromis, puis ajustez avec les notes de patch ou les tests fiables.",
             "data_title": "Donn\u00e9es et fra\u00eecheur",
             "data_text": "Ce site suit la fen\u00eatre de recherche du 31 juillet 2026 et pr\u00e9sente les conseils comme des orientations tant que les valeurs exactes restent \u00e0 confirmer.",
-            "faq_title": "FAQ des loadouts Mistfall Hunter",
+            "faq_title": "Questions fréquentes sur les loadouts Mistfall Hunter",
             "about_title": "\u00c0 propos de Mistfall Loadouts",
             "about_text": "Mistfall Loadouts est un site ind\u00e9pendant pour planifier les builds, comparer les classes et pr\u00e9parer les routes.",
             "privacy_title": "Politique de confidentialit\u00e9",
@@ -368,7 +370,8 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "nav_tool": "Planer",
             "nav_classes": "Klassen",
             "nav_builds": "Builds",
-            "nav_guide": "Guide",
+            "nav_guide": "Anleitung",
+            "nav_faq": "Häufige Fragen",
             "hero_eyebrow": "Build-Planung zur Startwoche",
             "hero_title": "Mistfall Hunter Loadouts f\u00fcr Klassen, Risiko und Extraktion",
             "hero_lede": "W\u00e4hle Rolle, Waffenstil und Risiko, um vor dem Run eine brauchbare Loadout-Richtung zu erhalten.",
@@ -415,7 +418,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "guide_intro": "W\u00e4hle den n\u00e4chsten Stil, lies die Kompromisse und passe nach Patches oder verl\u00e4sslichen Tests an.",
             "data_title": "Daten und Aktualit\u00e4t",
             "data_text": "Der Stand bezieht sich auf das Suchfenster vom 31. Juli 2026. Die Hinweise bleiben Richtungen, bis exakte Werte best\u00e4tigt sind.",
-            "faq_title": "Mistfall Hunter Loadout-FAQ",
+            "faq_title": "Häufige Fragen zu Mistfall-Hunter-Loadouts",
             "about_title": "\u00dcber Mistfall Loadouts",
             "about_text": "Mistfall Loadouts ist eine unabh\u00e4ngige Planungsseite f\u00fcr Builds, Klassenvergleiche und Routen.",
             "privacy_title": "Datenschutzrichtlinie",
@@ -447,6 +450,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "nav_classes": "Classes",
             "nav_builds": "Builds",
             "nav_guide": "Guia",
+            "nav_faq": "Perguntas frequentes",
             "hero_eyebrow": "Planejamento da semana de lan\u00e7amento",
             "hero_title": "Loadouts de Mistfall Hunter para classes, risco e extra\u00e7\u00e3o",
             "hero_lede": "Escolha fun\u00e7\u00e3o, arma e risco para receber uma dire\u00e7\u00e3o pr\u00e1tica antes da run.",
@@ -493,7 +497,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "guide_intro": "Escolha o estilo mais pr\u00f3ximo, leia os custos e ajuste depois de patches ou testes confi\u00e1veis.",
             "data_title": "Dados e atualidade",
             "data_text": "Este site foi criado para a janela de pesquisa de 31 de julho de 2026 e trata as recomenda\u00e7\u00f5es como dire\u00e7\u00f5es at\u00e9 os valores exatos serem confirmados.",
-            "faq_title": "FAQ de loadouts de Mistfall Hunter",
+            "faq_title": "Perguntas frequentes sobre loadouts de Mistfall Hunter",
             "about_title": "Sobre Mistfall Loadouts",
             "about_text": "Mistfall Loadouts \u00e9 um site independente para planejar builds, comparar classes e preparar rotas.",
             "privacy_title": "Pol\u00edtica de privacidade",
@@ -525,6 +529,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "nav_classes": "\ud074\ub798\uc2a4",
             "nav_builds": "\ube4c\ub4dc",
             "nav_guide": "\uac00\uc774\ub4dc",
+            "nav_faq": "\uc790\uc8fc \ubb3b\ub294 \uc9c8\ubb38",
             "hero_eyebrow": "\ucd9c\uc2dc \uc8fc\uac04 \ube4c\ub4dc \uacc4\ud68d",
             "hero_title": "\ud074\ub798\uc2a4, \uc704\ud5d8\ub3c4, \ud0c8\ucd9c \ubaa9\ud45c\ub85c \uc120\ud0dd\ud558\ub294 Mistfall Hunter \ub85c\ub4dc\uc544\uc6c3",
             "hero_lede": "\uc5ed\ud560, \ubb34\uae30, \uc704\ud5d8\ub3c4\ub97c \uc120\ud0dd\ud574 \ub7f0 \uc804\uc5d0 \uc2e4\uc6a9\uc801\uc778 \ub85c\ub4dc\uc544\uc6c3 \ubc29\ud5a5\uc744 \ud655\uc778\ud558\uc138\uc694.",
@@ -571,7 +576,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "guide_intro": "\uac00\uc7a5 \uac00\uae4c\uc6b4 \uc2a4\ud0c0\uc77c\uc744 \uace0\ub974\uace0 \ud2b8\ub808\uc774\ub4dc\uc624\ud504\ub97c \uc77d\uc740 \ub4a4 \ud328\uce58\uc640 \uc2e0\ub8b0\ud560 \uc218 \uc788\ub294 \ud14c\uc2a4\ud2b8\uc5d0 \ub9de\ucdb0 \uc870\uc815\ud558\uc138\uc694.",
             "data_title": "\ub370\uc774\ud130\uc640 \uc2e0\uc120\ub3c4 \uba54\ubaa8",
             "data_text": "2026\ub144 7\uc6d4 31\uc77c \uac80\uc0c9 \uad6c\uac04\uc744 \uae30\uc900\uc73c\ub85c \uc791\uc131\ub418\uc5c8\uc73c\uba70, \uc815\ud655\ud55c \uac8c\uc784 \uc218\uce58\uac00 \ud655\uc778\ub420 \ub54c\uae4c\uc9c0\ub294 \ubc29\ud5a5\uc73c\ub85c \uc81c\uc2dc\ud569\ub2c8\ub2e4.",
-            "faq_title": "Mistfall Hunter \ub85c\ub4dc\uc544\uc6c3 FAQ",
+            "faq_title": "Mistfall Hunter \ub85c\ub4dc\uc544\uc6c3 \uc790\uc8fc \ubb3b\ub294 \uc9c8\ubb38",
             "about_title": "Mistfall Loadouts \uc18c\uac1c",
             "about_text": "Mistfall Hunter \ube4c\ub4dc \ud310\ub2e8, \ud074\ub798\uc2a4 \ube44\uad50, \ub8e8\ud2b8 \uc900\ube44\ub97c \ub3d5\ub294 \ub3c5\ub9bd \ud32c \uc0ac\uc774\ud2b8\uc785\ub2c8\ub2e4.",
             "privacy_title": "\uac1c\uc778\uc815\ubcf4 \ucc98\ub9ac\ubc29\uce68",
@@ -603,6 +608,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "nav_classes": "Classi",
             "nav_builds": "Build",
             "nav_guide": "Guida",
+            "nav_faq": "Domande frequenti",
             "hero_eyebrow": "Pianificazione della settimana di lancio",
             "hero_title": "Loadout Mistfall Hunter per classi, rischio ed estrazione",
             "hero_lede": "Scegli ruolo, arma e rischio per ottenere una direzione pratica prima della run.",
@@ -649,7 +655,7 @@ for locale in ["fr", "de", "pt", "ko", "it"]:
             "guide_intro": "Scegli lo stile pi\u00f9 vicino, leggi i compromessi e aggiorna dopo patch o test affidabili.",
             "data_title": "Dati e freschezza",
             "data_text": "Il sito segue la finestra di ricerca del 31 luglio 2026 e presenta i consigli come direzioni finch\u00e9 i valori esatti non sono confermati.",
-            "faq_title": "FAQ loadout Mistfall Hunter",
+            "faq_title": "Domande frequenti sui loadout di Mistfall Hunter",
             "about_title": "Informazioni su Mistfall Loadouts",
             "about_text": "Mistfall Loadouts \u00e8 un sito indipendente per pianificare build, confrontare classi e preparare rotte.",
             "privacy_title": "Informativa sulla privacy",
@@ -751,13 +757,13 @@ LOCALIZED_BUILD_PATTERNS: Dict[str, List[Dict[str, str]]] = {
 LOCALIZED_BUILD_PATTERNS["fr"] = [
     {"name": "Extracteur s\u00fbr", "best": "Solo, d\u00e9but, joueurs prudents", "priorities": "Mobilit\u00e9, sustain, outils d'\u00e9vasion", "mistake": "Sacrifier l'\u00e9vasion pour les d\u00e9g\u00e2ts"},
     {"name": "Raider \u00e9quilibr\u00e9", "best": "Groupes mixtes", "priorities": "Arme fiable, couche d\u00e9fensive, utilit\u00e9 flexible", "mistake": "Dupliquer le m\u00eame r\u00f4le"},
-    {"name": "Briseur de boss", "best": "Pression planifi\u00e9e sur boss", "priorities": "Burst, uptime, option de r\u00e9cup\u00e9ration", "mistake": "Entrer sans route de reset"},
+    {"name": "Briseur de boss", "best": "Pression planifi\u00e9e sur boss", "priorities": "Burst, uptime, option de r\u00e9cup\u00e9ration", "mistake": "Entrer sans route de r\u00e9cup\u00e9ration"},
     {"name": "Appel d'\u00e9claireur", "best": "\u00c9quipes qui ont besoin d'information", "priorities": "Vision, mobilit\u00e9, d\u00e9sengagement discret", "mistake": "Combattre chaque contact"},
 ]
 LOCALIZED_BUILD_PATTERNS["de"] = [
     {"name": "Sicherer Extraktor", "best": "Solo, fr\u00fches Spiel, vorsichtige Spieler", "priorities": "Mobilit\u00e4t, Sustain, Fluchtwerkzeuge", "mistake": "Fluchtwerkzeuge f\u00fcr Schaden opfern"},
     {"name": "Ausgewogener Raider", "best": "Die meisten gemischten Gruppen", "priorities": "Zuverl\u00e4ssige Waffe, Verteidigung, flexible N\u00fctzlichkeit", "mistake": "Dieselbe Teamrolle doppeln"},
-    {"name": "Bossbrecher", "best": "Geplanter Bossdruck", "priorities": "Burst-Fenster, Uptime, Erholung", "mistake": "Ohne Reset-Route starten"},
+    {"name": "Bossbrecher", "best": "Geplanter Bossdruck", "priorities": "Burst-Fenster, Uptime, Erholung", "mistake": "Ohne Ausweichroute starten"},
     {"name": "Scout-Rufer", "best": "Teams mit Informationsbedarf", "priorities": "Sicht, Mobilit\u00e4t, leiser R\u00fcckzug", "mistake": "Jeden Kontakt bek\u00e4mpfen"},
 ]
 LOCALIZED_BUILD_PATTERNS["pt"] = [
@@ -775,7 +781,7 @@ LOCALIZED_BUILD_PATTERNS["ko"] = [
 LOCALIZED_BUILD_PATTERNS["it"] = [
     {"name": "Estrattore sicuro", "best": "Solo, inizio, giocatori cauti", "priorities": "Mobilit\u00e0, sustain, fuga", "mistake": "Saltare strumenti di uscita per danni"},
     {"name": "Raider bilanciato", "best": "Gruppi misti", "priorities": "Arma affidabile, difesa, utilit\u00e0 flessibile", "mistake": "Duplicare lo stesso ruolo"},
-    {"name": "Spezzaboss", "best": "Pressione boss pianificata", "priorities": "Finestra burst, uptime, recupero", "mistake": "Entrare senza rotta di reset"},
+    {"name": "Spezzaboss", "best": "Pressione boss pianificata", "priorities": "Finestra burst, uptime, recupero", "mistake": "Entrare senza rotta di recupero"},
     {"name": "Chiamata scout", "best": "Team che hanno bisogno di informazioni", "priorities": "Visione, mobilit\u00e0, disengage discreto", "mistake": "Combattere ogni contatto"},
 ]
 
@@ -1010,7 +1016,7 @@ LEGAL_BODY: Dict[str, Dict[str, str]] = {
         "contact": "\uc218\uc815, \ucd9c\ucc98 \uc5c5\ub370\uc774\ud2b8, \uc815\ucc45 \ubb38\uc758\ub294 hello@mistfallloadouts.blog \ub85c \ubcf4\ub0b4\uc8fc\uc138\uc694.",
     },
     "it": {
-        "scope": "Mistfall Loadouts pubblica guide indipendenti per loadout, classi, build e decisioni di rotta di Mistfall Hunter. Il sito evita funzioni account e non chiede password, credenziali di gioco, pagamenti o profili privati.",
+        "scope": "Mistfall Loadouts pubblica consigli indipendenti per loadout, classi, build e decisioni di rotta di Mistfall Hunter. Il sito evita funzioni account e non chiede password, credenziali di gioco, pagamenti o profili privati.",
         "advertising": "Se la pubblicita sara attivata in futuro, fornitori terzi come Google potranno usare cookie, web beacon, indirizzi IP, dati del browser e segnali simili per mostrare, misurare e proteggere annunci. Il planner non richiede login, pagamenti o profili privati.",
         "choices": "I visitatori possono gestire i cookie nel browser. Se un mercato richiede banner di consenso o controlli regionali, il sito dovrebbe abilitarli prima degli annunci personalizzati.",
         "data": "Il planner funziona nel browser e usa solo le opzioni scelte nella pagina. Non serve un account personale. Hosting e CDN possono conservare log di base per sicurezza e affidabilita.",
@@ -1136,10 +1142,23 @@ PAGES = {
     "classes": {"path": "/classes/"},
     "builds": {"path": "/builds/"},
     "guide": {"path": "/guide/"},
+    "price-guide": {"path": "/mistfall-hunter-price/"},
     "about": {"path": "/about/"},
     "contact": {"path": "/contact/"},
     "privacy-policy": {"path": "/privacy-policy/"},
     "terms-of-service": {"path": "/terms-of-service/"},
+}
+
+
+COMMON_UI_LABELS: Dict[str, Dict[str, str]] = {
+    "en": {"language_label": "Language", "primary_nav_label": "Primary navigation", "footer_nav_label": "Footer navigation", "advertisement_label": "Advertisement"},
+    "es": {"language_label": "Idioma", "primary_nav_label": "Navegación principal", "footer_nav_label": "Navegación del pie de página", "advertisement_label": "Publicidad"},
+    "ja": {"language_label": "言語", "primary_nav_label": "メインナビゲーション", "footer_nav_label": "フッターナビゲーション", "advertisement_label": "広告"},
+    "fr": {"language_label": "Langue", "primary_nav_label": "Navigation principale", "footer_nav_label": "Navigation du pied de page", "advertisement_label": "Publicité"},
+    "de": {"language_label": "Sprache", "primary_nav_label": "Hauptnavigation", "footer_nav_label": "Footer-Navigation", "advertisement_label": "Werbung"},
+    "pt": {"language_label": "Idioma", "primary_nav_label": "Navegação principal", "footer_nav_label": "Navegação do rodapé", "advertisement_label": "Publicidade"},
+    "ko": {"language_label": "언어", "primary_nav_label": "주요 탐색", "footer_nav_label": "푸터 탐색", "advertisement_label": "광고"},
+    "it": {"language_label": "Lingua", "primary_nav_label": "Navigazione principale", "footer_nav_label": "Navigazione del piè di pagina", "advertisement_label": "Pubblicità"},
 }
 
 
@@ -1150,7 +1169,8 @@ def tr(locale: str) -> Dict[str, str]:
     :param locale: 语言代码
     :return: dict[str, str]，当前语言文案
     """
-    return TRANSLATIONS.get(locale, TRANSLATIONS[DEFAULT_LANGUAGE])
+    base = TRANSLATIONS.get(locale, TRANSLATIONS[DEFAULT_LANGUAGE])
+    return base | COMMON_UI_LABELS.get(locale, COMMON_UI_LABELS[DEFAULT_LANGUAGE])
 
 
 def localized_path(page_key: str, locale: str) -> str:
@@ -1212,7 +1232,54 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
     :param locale: 语言代码
     :return: dict[str, Any]，模板上下文字典
     """
+    source_guide = PRICE_GUIDES[locale]
+    price_guide = dict(source_guide)
+    price_guide["url"] = localized_path("price-guide", locale)
+    price_guide["sections"] = []
+    for source_section in source_guide["sections"]:
+        section = dict(source_section)
+        section_links = []
+        for source_link in source_section.get("links", []):
+            link = dict(source_link)
+            link["url"] = localized_path(source_link["target"], locale)
+            section_links.append(link)
+        if section_links:
+            section["links"] = section_links
+        price_guide["sections"].append(section)
+    price_guide["related_links"] = [
+        dict(link, url=localized_path(link["target"], locale))
+        for link in source_guide["related_links"]
+    ]
     t = tr(locale)
+    if page_key == "price-guide":
+        t = t | {
+            "title": price_guide["title"],
+            "meta_title": price_guide["meta_title"],
+            "meta_description": price_guide["meta_description"],
+            "meta_keywords": price_guide["meta_keywords"],
+        }
+    article_schema = None
+    if page_key == "price-guide":
+        article_schema = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": price_guide["title"],
+            "description": price_guide["meta_description"],
+            "url": canonical_url(page_key, locale),
+            "image": [f"{BASE_URL}/static/{price_guide['feature_image']['path']}"],
+            "dateModified": price_guide["checked_iso"],
+            "inLanguage": locale,
+            "author": {"@type": "Organization", "name": "Mistfall Loadouts"},
+            "publisher": {"@type": "Organization", "name": "Mistfall Loadouts", "url": f"{BASE_URL}/"},
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": item["question"],
+                    "acceptedAnswer": {"@type": "Answer", "text": item["answer"]},
+                }
+                for item in price_guide["faq"]
+            ],
+        }
     language_links = [
         {"code": code, "label": LOCALE_LABELS[code], "url": localized_path(page_key, code), "active": code == locale}
         for code in SUPPORTED_LANGUAGES
@@ -1227,6 +1294,10 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         "alternate_urls": alternate_urls(page_key),
         "base_url": BASE_URL,
         "last_updated": LAST_UPDATED,
+        "price_guide": price_guide,
+        "page_image": price_guide["feature_image"]["path"] if page_key == "price-guide" else None,
+        "page_image_url": f"{BASE_URL}/static/{price_guide['feature_image']['path']}" if page_key == "price-guide" else None,
+        "article_schema": article_schema,
         "class_rows": localized_items(LOCALIZED_CLASS_ROWS, locale),
         "build_patterns": localized_items(LOCALIZED_BUILD_PATTERNS, locale),
         "faq_items": localized_items(FAQ_ITEMS, locale),
@@ -1264,6 +1335,22 @@ def render_page(page_key: str, locale: str = DEFAULT_LANGUAGE) -> str:
     return render_template(template, page_key=page_key, **common_context(page_key, locale))
 
 
+def page_key_from_segment(segment: str) -> str | None:
+    """
+    将 URL 路径片段解析为内部页面键名。
+
+    :param segment: URL 中不带斜杠的页面片段
+    :return: str | None，匹配的页面键名或未找到时的 None
+    """
+    if segment in PAGES:
+        return segment
+    target_path = f"/{segment}/"
+    for page_key, config in PAGES.items():
+        if config["path"] == target_path:
+            return page_key
+    return None
+
+
 @app.route("/")
 def index() -> str:
     """
@@ -1284,8 +1371,9 @@ def single_segment_page(segment: str) -> str:
     """
     if segment in SUPPORTED_LANGUAGES:
         return render_page("index", segment)
-    if segment in PAGES:
-        return render_page(segment, DEFAULT_LANGUAGE)
+    page_key = page_key_from_segment(segment)
+    if page_key:
+        return render_page(page_key, DEFAULT_LANGUAGE)
     abort(404)
 
 
@@ -1309,7 +1397,10 @@ def localized_content_page(lang: str, page_key: str) -> str:
     :param page_key: 页面键名
     :return: str，内容页 HTML
     """
-    return render_page(page_key, lang)
+    resolved_page_key = page_key_from_segment(page_key)
+    if not resolved_page_key:
+        abort(404)
+    return render_page(resolved_page_key, lang)
 
 
 @app.errorhandler(404)

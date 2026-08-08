@@ -2,6 +2,117 @@
 
 {% block content %}
 <main>
+  {% if page_key == "price-guide" %}
+  <article class="article-page">
+    <section class="article-hero">
+      <div class="article-hero-copy">
+        <p class="eyebrow">{{ price_guide['eyebrow'] }}</p>
+        <h1>{{ price_guide['title'] }}</h1>
+        <p class="lede">{{ price_guide['lede'] }}</p>
+        <p class="source-note">{{ price_guide['checked_label'] }}</p>
+      </div>
+      <figure class="article-feature">
+        <img src="{{ url_for('static', filename=price_guide['feature_image']['path']) }}" alt="{{ price_guide['feature_image']['alt'] }}" width="{{ price_guide['feature_image']['width'] }}" height="{{ price_guide['feature_image']['height'] }}">
+        <figcaption>{{ price_guide['feature_image']['caption'] }} <a href="{{ price_guide['feature_image']['source_url'] }}">{{ price_guide['feature_image']['source_label'] }}</a></figcaption>
+      </figure>
+    </section>
+
+    <section class="article-layout">
+      <article class="article-main">
+        <p class="article-answer">{{ price_guide['intro'] }}</p>
+
+        <div class="article-facts">
+          <div class="section-head">
+            <p class="eyebrow">{{ price_guide['checked_label'] }}</p>
+            <h2>{{ price_guide['facts_headers'][0] }}</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>{% for header in price_guide['facts_headers'] %}<th>{{ header }}</th>{% endfor %}</tr></thead>
+              <tbody>
+                {% for row in price_guide['facts_rows'] %}
+                <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {% for section in price_guide['sections'] %}
+        <section id="{{ section['id'] }}" class="article-section">
+          <h2>{{ section['heading'] }}</h2>
+          {% for paragraph in section['paragraphs'] %}
+          <p>{{ paragraph }}</p>
+          {% endfor %}
+          {% if section['links'] %}
+          <p class="article-inline-links">
+            {% for link in section['links'] %}<a href="{{ link['url'] }}">{{ link['label'] }}</a>{% if not loop.last %}<span aria-hidden="true"> · </span>{% endif %}{% endfor %}
+          </p>
+          {% endif %}
+          {% if section['bullets'] %}
+          <ul class="article-list">
+            {% for item in section['bullets'] %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+          {% endif %}
+          {% if section['table'] %}
+          <div class="table-wrap article-table">
+            <table>
+              <thead><tr>{% for header in section['table']['headers'] %}<th>{{ header }}</th>{% endfor %}</tr></thead>
+              <tbody>
+                {% for row in section['table']['rows'] %}
+                <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+          {% if section['steps'] %}
+          <ol class="steps article-steps">
+            {% for step in section['steps'] %}<li>{{ step }}</li>{% endfor %}
+          </ol>
+          {% endif %}
+          {% if section['image'] %}
+          <figure class="article-media">
+            <img src="{{ url_for('static', filename=section['image']['path']) }}" alt="{{ section['image']['alt'] }}" width="{{ section['image']['width'] }}" height="{{ section['image']['height'] }}" loading="lazy">
+            <figcaption>{{ section['image']['caption'] }} <a href="{{ section['image']['source_url'] }}" target="_blank" rel="noopener">{{ section['image']['source_label'] }}</a></figcaption>
+          </figure>
+          {% endif %}
+        </section>
+        {% endfor %}
+
+        <section id="faq" class="article-section faq-section">
+          <h2>{{ price_guide['faq_title'] }}</h2>
+          {% for item in price_guide['faq'] %}
+          <details {% if loop.first %}open{% endif %}>
+            <summary>{{ item['question'] }}</summary>
+            <p>{{ item['answer'] }}</p>
+          </details>
+          {% endfor %}
+        </section>
+
+        <section id="summary" class="article-section article-summary">
+          <h2>{{ price_guide['summary_heading'] }}</h2>
+          <p>{{ price_guide['summary'] }}</p>
+        </section>
+
+        <section class="article-related" aria-labelledby="related-heading">
+          <h2 id="related-heading">{{ price_guide['related_title'] }}</h2>
+          <ul>
+            {% for link in price_guide['related_links'] %}<li><a href="{{ link['url'] }}">{{ link['label'] }}</a></li>{% endfor %}
+          </ul>
+        </section>
+
+        <section class="article-sources" aria-labelledby="sources-heading">
+          <h2 id="sources-heading">{{ price_guide['source_title'] }}</h2>
+          <p>{{ price_guide['source_note'] }}</p>
+          <ul>
+            {% for link in price_guide['official_links'] %}<li><a href="{{ link['url'] }}" target="_blank" rel="noopener">{{ link['label'] }}</a></li>{% endfor %}
+          </ul>
+        </section>
+      </article>
+    </section>
+  </article>
+  {% else %}
   {% if page_key == "index" %}
   <section class="hero">
     <div class="hero-copy">
@@ -139,6 +250,9 @@
     <div class="data-note">
       <h3>{{ t.data_title }}</h3>
       <p>{{ t.data_text }}</p>
+      {% if page_key == "index" %}
+      <p><a class="article-entry" href="{{ price_guide['url'] }}">{{ price_guide['title'] }}</a></p>
+      {% endif %}
     </div>
     <div class="deep-guide">
       <h3>{{ t.deep_title }}</h3>
@@ -160,5 +274,6 @@
     </details>
     {% endfor %}
   </section>
+  {% endif %}
 </main>
 {% endblock %}

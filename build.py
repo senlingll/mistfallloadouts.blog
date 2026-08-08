@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 
 from app import BASE_URL, PAGES, SUPPORTED_LANGUAGES, app, localized_path
+from price_guide import PRICE_GUIDES
 
 
 BUILD_DIR = Path("build")
@@ -87,6 +88,10 @@ def copy_static_assets() -> None:
         (Path("static/css/mistfall.css"), BUILD_DIR / "static/css/mistfall.css"),
         (Path("static/js/mistfall-planner.js"), BUILD_DIR / "static/js/mistfall-planner.js"),
     ]
+    files.extend(
+        (source, BUILD_DIR / "static/images" / source.name)
+        for source in sorted(Path("static/images").glob("*.webp"))
+    )
     for source, destination in files:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
@@ -101,10 +106,11 @@ def write_root_files() -> None:
     routes = []
     for page_key in PAGES:
         for locale in SUPPORTED_LANGUAGES:
-            routes.append(localized_path(page_key, locale))
+            routes.append((page_key, localized_path(page_key, locale)))
 
     sitemap_urls = "\n".join(
-        f"  <url><loc>{BASE_URL}{route.rstrip('/')}/</loc><lastmod>2026-07-31</lastmod></url>" for route in routes
+        f"  <url><loc>{BASE_URL}{route.rstrip('/')}/</loc><lastmod>{PRICE_GUIDES['en']['checked_iso'] if page_key == 'price-guide' else '2026-07-31'}</lastmod></url>"
+        for page_key, route in routes
     )
     (BUILD_DIR / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap_urls}\n</urlset>\n',
@@ -115,7 +121,7 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "llms.txt").write_text(
-        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Contact: {BASE_URL}/contact/\n",
+        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "llms-full.txt").write_text(
@@ -127,10 +133,19 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "favicon.ico").write_bytes(favicon_bytes())
-    (BUILD_DIR / "_redirects").write_text(
-        "/classes /classes/ 301\n/builds /builds/ 301\n/guide /guide/ 301\n/about /about/ 301\n/contact /contact/ 301\n/privacy-policy /privacy-policy/ 301\n/terms-of-service /terms-of-service/ 301\n",
-        encoding="utf-8",
-    )
+    redirects = [
+        "/classes /classes/ 301",
+        "/builds /builds/ 301",
+        "/guide /guide/ 301",
+        "/about /about/ 301",
+        "/contact /contact/ 301",
+        "/privacy-policy /privacy-policy/ 301",
+        "/terms-of-service /terms-of-service/ 301",
+    ]
+    for locale in SUPPORTED_LANGUAGES:
+        prefix = "" if locale == "en" else f"/{locale}"
+        redirects.append(f"{prefix}/mistfall-hunter-price {prefix}/mistfall-hunter-price/ 301")
+    (BUILD_DIR / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")
     (BUILD_DIR / "_worker.js").write_text(
         "export default {\n"
         "  async fetch(request, env) {\n"
