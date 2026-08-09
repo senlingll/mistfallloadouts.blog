@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 
 from flask import Flask, abort, render_template
 
+from gameplay_guide import GAMEPLAY_GUIDES
 from price_guide import PRICE_GUIDES
 
 app = Flask(__name__)
@@ -1143,6 +1144,7 @@ PAGES = {
     "builds": {"path": "/builds/"},
     "guide": {"path": "/guide/"},
     "price-guide": {"path": "/mistfall-hunter-price/"},
+    "gameplay-guide": {"path": "/mistfall-hunter-gameplay/"},
     "about": {"path": "/about/"},
     "contact": {"path": "/contact/"},
     "privacy-policy": {"path": "/privacy-policy/"},
@@ -1250,24 +1252,57 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         dict(link, url=localized_path(link["target"], locale))
         for link in source_guide["related_links"]
     ]
-    t = tr(locale)
+    gameplay_source_guide = GAMEPLAY_GUIDES[locale]
+    gameplay_guide = dict(gameplay_source_guide)
+    gameplay_guide["url"] = localized_path("gameplay-guide", locale)
+    gameplay_guide["sections"] = []
+    for source_section in gameplay_source_guide["sections"]:
+        section = dict(source_section)
+        section_links = []
+        for source_link in source_section.get("links", []):
+            link = dict(source_link)
+            link["url"] = localized_path(source_link["target"], locale)
+            section_links.append(link)
+        if section_links:
+            section["links"] = section_links
+        gameplay_guide["sections"].append(section)
+    gameplay_guide["related_links"] = [
+        dict(link, url=localized_path(link["target"], locale))
+        for link in gameplay_source_guide["related_links"]
+    ]
+    price_guide["related_links"].append(
+        {"url": localized_path("gameplay-guide", locale), "label": gameplay_source_guide["entry_label"]}
+    )
+    article_guide = None
     if page_key == "price-guide":
+        article_guide = price_guide
+    elif page_key == "gameplay-guide":
+        article_guide = gameplay_guide
+    t = tr(locale)
+    if article_guide:
         t = t | {
-            "title": price_guide["title"],
-            "meta_title": price_guide["meta_title"],
-            "meta_description": price_guide["meta_description"],
-            "meta_keywords": price_guide["meta_keywords"],
+            "title": article_guide["title"],
+            "meta_title": article_guide["meta_title"],
+            "meta_description": article_guide["meta_description"],
+            "meta_keywords": article_guide["meta_keywords"],
         }
     article_schema = None
-    if page_key == "price-guide":
+    if article_guide:
         article_schema = {
             "@context": "https://schema.org",
             "@type": "Article",
-            "headline": price_guide["title"],
-            "description": price_guide["meta_description"],
+            "headline": article_guide["title"],
+            "description": article_guide["meta_description"],
             "url": canonical_url(page_key, locale),
-            "image": [f"{BASE_URL}/static/{price_guide['feature_image']['path']}"],
-            "dateModified": price_guide["checked_iso"],
+            "image": [
+                f"{BASE_URL}/static/{article_guide['feature_image']['path']}",
+                *[
+                    f"{BASE_URL}/static/{section['image']['path']}"
+                    for section in article_guide["sections"]
+                    if section.get("image")
+                ],
+            ],
+            "dateModified": article_guide["checked_iso"],
             "inLanguage": locale,
             "author": {"@type": "Organization", "name": "Mistfall Loadouts"},
             "publisher": {"@type": "Organization", "name": "Mistfall Loadouts", "url": f"{BASE_URL}/"},
@@ -1277,7 +1312,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
                     "name": item["question"],
                     "acceptedAnswer": {"@type": "Answer", "text": item["answer"]},
                 }
-                for item in price_guide["faq"]
+                for item in article_guide["faq"]
             ],
         }
     language_links = [
@@ -1294,9 +1329,10 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         "alternate_urls": alternate_urls(page_key),
         "base_url": BASE_URL,
         "last_updated": LAST_UPDATED,
-        "price_guide": price_guide,
-        "page_image": price_guide["feature_image"]["path"] if page_key == "price-guide" else None,
-        "page_image_url": f"{BASE_URL}/static/{price_guide['feature_image']['path']}" if page_key == "price-guide" else None,
+        "price_guide": article_guide or price_guide,
+        "gameplay_guide": gameplay_guide,
+        "page_image": article_guide["feature_image"]["path"] if article_guide else None,
+        "page_image_url": f"{BASE_URL}/static/{article_guide['feature_image']['path']}" if article_guide else None,
         "article_schema": article_schema,
         "class_rows": localized_items(LOCALIZED_CLASS_ROWS, locale),
         "build_patterns": localized_items(LOCALIZED_BUILD_PATTERNS, locale),

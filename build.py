@@ -3,10 +3,15 @@ import shutil
 from pathlib import Path
 
 from app import BASE_URL, PAGES, SUPPORTED_LANGUAGES, app, localized_path
+from gameplay_guide import GAMEPLAY_GUIDES
 from price_guide import PRICE_GUIDES
 
 
 BUILD_DIR = Path("build")
+PAGE_LASTMOD = {
+    "price-guide": PRICE_GUIDES["en"]["checked_iso"],
+    "gameplay-guide": GAMEPLAY_GUIDES["en"]["checked_iso"],
+}
 
 
 def clean_build_dir() -> None:
@@ -109,7 +114,7 @@ def write_root_files() -> None:
             routes.append((page_key, localized_path(page_key, locale)))
 
     sitemap_urls = "\n".join(
-        f"  <url><loc>{BASE_URL}{route.rstrip('/')}/</loc><lastmod>{PRICE_GUIDES['en']['checked_iso'] if page_key == 'price-guide' else '2026-07-31'}</lastmod></url>"
+        f"  <url><loc>{BASE_URL}{route.rstrip('/')}/</loc><lastmod>{PAGE_LASTMOD.get(page_key, '2026-07-31')}</lastmod></url>"
         for page_key, route in routes
     )
     (BUILD_DIR / "sitemap.xml").write_text(
@@ -121,11 +126,11 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "llms.txt").write_text(
-        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
+        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, gameplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "llms-full.txt").write_text(
-        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players choose launch-week Mistfall Hunter loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-07-31\n",
+        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay and choose launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-08-10\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "ads.txt").write_text(
@@ -145,6 +150,7 @@ def write_root_files() -> None:
     for locale in SUPPORTED_LANGUAGES:
         prefix = "" if locale == "en" else f"/{locale}"
         redirects.append(f"{prefix}/mistfall-hunter-price {prefix}/mistfall-hunter-price/ 301")
+        redirects.append(f"{prefix}/mistfall-hunter-gameplay {prefix}/mistfall-hunter-gameplay/ 301")
     (BUILD_DIR / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")
     (BUILD_DIR / "_worker.js").write_text(
         "export default {\n"
