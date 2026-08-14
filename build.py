@@ -11,6 +11,7 @@ BUILD_DIR = Path("build")
 PAGE_LASTMOD = {
     "price-guide": PRICE_GUIDES["en"]["checked_iso"],
     "gameplay-guide": GAMEPLAY_GUIDES["en"]["checked_iso"],
+    "crossplay-guide": "2026-08-15",
 }
 
 
@@ -126,11 +127,11 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "llms.txt").write_text(
-        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, gameplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
+        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, gameplay guide, crossplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "llms-full.txt").write_text(
-        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay and choose launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-08-10\n",
+        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay, platform crossplay, and launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-08-15\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "ads.txt").write_text(
@@ -151,6 +152,7 @@ def write_root_files() -> None:
         prefix = "" if locale == "en" else f"/{locale}"
         redirects.append(f"{prefix}/mistfall-hunter-price {prefix}/mistfall-hunter-price/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-gameplay {prefix}/mistfall-hunter-gameplay/ 301")
+        redirects.append(f"{prefix}/mistfall-hunter-crossplay {prefix}/mistfall-hunter-crossplay/ 301")
     (BUILD_DIR / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")
     (BUILD_DIR / "_worker.js").write_text(
         "export default {\n"

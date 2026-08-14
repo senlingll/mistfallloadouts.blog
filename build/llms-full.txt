@@ -1,6 +1,6 @@
 # Mistfall Loadouts Full Context
 
-Mistfall Loadouts helps players understand Mistfall Hunter gameplay and choose launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.
+Mistfall Loadouts helps players understand Mistfall Hunter gameplay, platform crossplay, and launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.
 
 Canonical domain: https://mistfallloadouts.blog
-Last updated: 2026-08-10
+Last updated: 2026-08-15

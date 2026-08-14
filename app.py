@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 
 from flask import Flask, abort, render_template
 
+from crossplay_guide import CROSSPLAY_GUIDES
 from gameplay_guide import GAMEPLAY_GUIDES
 from price_guide import PRICE_GUIDES
 
@@ -1145,6 +1146,7 @@ PAGES = {
     "guide": {"path": "/guide/"},
     "price-guide": {"path": "/mistfall-hunter-price/"},
     "gameplay-guide": {"path": "/mistfall-hunter-gameplay/"},
+    "crossplay-guide": {"path": "/mistfall-hunter-crossplay/"},
     "about": {"path": "/about/"},
     "contact": {"path": "/contact/"},
     "privacy-policy": {"path": "/privacy-policy/"},
@@ -1270,14 +1272,40 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         dict(link, url=localized_path(link["target"], locale))
         for link in gameplay_source_guide["related_links"]
     ]
+    crossplay_source_guide = CROSSPLAY_GUIDES[locale]
+    crossplay_guide = dict(crossplay_source_guide)
+    crossplay_guide["url"] = localized_path("crossplay-guide", locale)
+    crossplay_guide["sections"] = []
+    for source_section in crossplay_source_guide["sections"]:
+        section = dict(source_section)
+        section_links = []
+        for source_link in source_section.get("links", []):
+            link = dict(source_link)
+            link["url"] = localized_path(source_link["target"], locale)
+            section_links.append(link)
+        if section_links:
+            section["links"] = section_links
+        crossplay_guide["sections"].append(section)
+    crossplay_guide["related_links"] = [
+        dict(link, url=localized_path(link["target"], locale))
+        for link in crossplay_source_guide["related_links"]
+    ]
     price_guide["related_links"].append(
         {"url": localized_path("gameplay-guide", locale), "label": gameplay_source_guide["entry_label"]}
+    )
+    price_guide["related_links"].append(
+        {"url": localized_path("crossplay-guide", locale), "label": crossplay_source_guide["entry_label"]}
+    )
+    gameplay_guide["related_links"].append(
+        {"url": localized_path("crossplay-guide", locale), "label": crossplay_source_guide["entry_label"]}
     )
     article_guide = None
     if page_key == "price-guide":
         article_guide = price_guide
     elif page_key == "gameplay-guide":
         article_guide = gameplay_guide
+    elif page_key == "crossplay-guide":
+        article_guide = crossplay_guide
     t = tr(locale)
     if article_guide:
         t = t | {
@@ -1331,6 +1359,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         "last_updated": LAST_UPDATED,
         "price_guide": article_guide or price_guide,
         "gameplay_guide": gameplay_guide,
+        "crossplay_guide": crossplay_guide,
         "page_image": article_guide["feature_image"]["path"] if article_guide else None,
         "page_image_url": f"{BASE_URL}/static/{article_guide['feature_image']['path']}" if article_guide else None,
         "article_schema": article_schema,

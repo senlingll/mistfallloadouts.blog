@@ -2,7 +2,7 @@
 
 {% block content %}
 <main>
-  {% if page_key in ["price-guide", "gameplay-guide"] %}
+  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide"] %}
   <article class="article-page">
     <section class="article-hero">
       <div class="article-hero-copy">
@@ -253,6 +253,7 @@
       {% if page_key == "index" %}
       <p><a class="article-entry" href="{{ price_guide['url'] }}">{{ price_guide['title'] }}</a></p>
       <p><a class="article-entry" href="{{ gameplay_guide['url'] }}">{{ gameplay_guide['entry_label'] }}</a></p>
+      <p><a class="article-entry" href="{{ crossplay_guide['url'] }}">{{ crossplay_guide['entry_label'] }}</a></p>
       {% endif %}
     </div>
     <div class="deep-guide">
