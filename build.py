@@ -5,6 +5,7 @@ from pathlib import Path
 from app import BASE_URL, PAGES, SUPPORTED_LANGUAGES, app, localized_path
 from gameplay_guide import GAMEPLAY_GUIDES
 from price_guide import PRICE_GUIDES
+from tier_list_guide import TIER_LIST_GUIDES
 
 
 BUILD_DIR = Path("build")
@@ -12,6 +13,7 @@ PAGE_LASTMOD = {
     "price-guide": PRICE_GUIDES["en"]["checked_iso"],
     "gameplay-guide": GAMEPLAY_GUIDES["en"]["checked_iso"],
     "crossplay-guide": "2026-08-15",
+    "tier-list-guide": TIER_LIST_GUIDES["en"]["checked_iso"],
 }
 
 
@@ -127,7 +129,7 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "llms.txt").write_text(
-        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, gameplay guide, crossplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
+        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, tier list, gameplay guide, crossplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Tier list: {BASE_URL}/mistfall-hunter-tier-list/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "llms-full.txt").write_text(
@@ -153,6 +155,7 @@ def write_root_files() -> None:
         redirects.append(f"{prefix}/mistfall-hunter-price {prefix}/mistfall-hunter-price/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-gameplay {prefix}/mistfall-hunter-gameplay/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-crossplay {prefix}/mistfall-hunter-crossplay/ 301")
+        redirects.append(f"{prefix}/mistfall-hunter-tier-list {prefix}/mistfall-hunter-tier-list/ 301")
     (BUILD_DIR / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")
     (BUILD_DIR / "_worker.js").write_text(
         "export default {\n"

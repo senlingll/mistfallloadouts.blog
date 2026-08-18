@@ -2,7 +2,7 @@
 
 {% block content %}
 <main>
-  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide"] %}
+  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide", "tier-list-guide"] %}
   <article class="article-page">
     <section class="article-hero">
       <div class="article-hero-copy">
@@ -13,7 +13,7 @@
       </div>
       <figure class="article-feature">
         <img src="{{ url_for('static', filename=price_guide['feature_image']['path']) }}" alt="{{ price_guide['feature_image']['alt'] }}" width="{{ price_guide['feature_image']['width'] }}" height="{{ price_guide['feature_image']['height'] }}">
-        <figcaption>{{ price_guide['feature_image']['caption'] }} <a href="{{ price_guide['feature_image']['source_url'] }}">{{ price_guide['feature_image']['source_label'] }}</a></figcaption>
+        <figcaption>{{ price_guide['feature_image']['caption'] }} <a href="{{ price_guide['feature_image']['source_url'] }}" target="_blank" rel="noopener">{{ price_guide['feature_image']['source_label'] }}</a></figcaption>
       </figure>
     </section>
 
@@ -254,6 +254,7 @@
       <p><a class="article-entry" href="{{ price_guide['url'] }}">{{ price_guide['title'] }}</a></p>
       <p><a class="article-entry" href="{{ gameplay_guide['url'] }}">{{ gameplay_guide['entry_label'] }}</a></p>
       <p><a class="article-entry" href="{{ crossplay_guide['url'] }}">{{ crossplay_guide['entry_label'] }}</a></p>
+      <p><a class="article-entry" href="{{ tier_list_guide['url'] }}">{{ tier_list_guide['entry_label'] }}</a></p>
       {% endif %}
     </div>
     <div class="deep-guide">

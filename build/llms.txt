@@ -1,11 +1,12 @@
 # Mistfall Loadouts
 
-Independent Mistfall Hunter loadout planner, class guide, gameplay guide, crossplay guide, and build decision hub.
+Independent Mistfall Hunter loadout planner, class guide, tier list, gameplay guide, crossplay guide, and build decision hub.
 
 - Homepage: https://mistfallloadouts.blog/
 - Classes: https://mistfallloadouts.blog/classes/
 - Builds: https://mistfallloadouts.blog/builds/
 - Guide: https://mistfallloadouts.blog/guide/
+- Tier list: https://mistfallloadouts.blog/mistfall-hunter-tier-list/
 - Gameplay guide: https://mistfallloadouts.blog/mistfall-hunter-gameplay/
 - Crossplay guide: https://mistfallloadouts.blog/mistfall-hunter-crossplay/
 - Price guide: https://mistfallloadouts.blog/mistfall-hunter-price/
