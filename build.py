@@ -136,10 +136,6 @@ def write_root_files() -> None:
         f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay, platform crossplay, and launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-08-15\n",
         encoding="utf-8",
     )
-    (BUILD_DIR / "ads.txt").write_text(
-        "google.com, pub-9042195580058659, DIRECT, f08c47fec0942fa0\n",
-        encoding="utf-8",
-    )
     (BUILD_DIR / "favicon.ico").write_bytes(favicon_bytes())
     redirects = [
         "/classes /classes/ 301",
