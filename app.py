@@ -1338,6 +1338,27 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
     elif page_key == "tier-list-guide":
         article_guide = tier_list_guide
     t = tr(locale)
+    page_meta = {
+        "classes": {
+            "title": t["classes_title"],
+            "meta_title": f"{t['classes_title']} | Mistfall Hunter",
+            "meta_description": t["classes_intro"],
+            "meta_keywords": f"{t['meta_keywords']}, {t['table_class']}",
+        },
+        "builds": {
+            "title": t["builds_title"],
+            "meta_title": f"{t['builds_title']} | Mistfall Hunter",
+            "meta_description": t["builds_intro"],
+            "meta_keywords": f"{t['meta_keywords']}, {t['nav_builds']}",
+        },
+        "guide": {
+            "title": t["guide_title"],
+            "meta_title": f"{t['guide_title']} | Mistfall Hunter",
+            "meta_description": t["guide_intro"],
+            "meta_keywords": f"{t['meta_keywords']}, {t['nav_guide']}",
+        },
+    }
+    t = t | page_meta.get(page_key, {})
     if article_guide:
         t = t | {
             "title": article_guide["title"],

@@ -194,12 +194,13 @@
   </section>
   {% else %}
   <section class="legal-hero">
-    <p class="eyebrow">Mistfall Hunter</p>
+    <p class="eyebrow">{{ t.nav_classes if page_key == "classes" else t.nav_builds if page_key == "builds" else t.nav_guide }}</p>
     <h1>{{ t.title }}</h1>
-    <p>{{ t.hero_lede }}</p>
+    <p>{{ t.classes_intro if page_key == "classes" else t.builds_intro if page_key == "builds" else t.guide_intro }}</p>
   </section>
   {% endif %}
 
+  {% if page_key in ["index", "classes"] %}
   <section id="classes" class="content-section">
     <div class="section-head">
       <p class="eyebrow">{{ t.nav_classes }}</p>
@@ -217,7 +218,9 @@
       </table>
     </div>
   </section>
+  {% endif %}
 
+  {% if page_key in ["index", "builds"] %}
   <section id="builds" class="content-section alt">
     <div class="section-head">
       <p class="eyebrow">{{ t.nav_builds }}</p>
@@ -235,7 +238,9 @@
       {% endfor %}
     </div>
   </section>
+  {% endif %}
 
+  {% if page_key in ["index", "guide"] %}
   <section id="guide" class="content-section">
     <div class="section-head">
       <p class="eyebrow">{{ t.nav_guide }}</p>
@@ -264,7 +269,9 @@
       {% endfor %}
     </div>
   </section>
+  {% endif %}
 
+  {% if page_key == "index" %}
   <section id="faq" class="content-section faq-section">
     <div class="section-head">
       <p class="eyebrow">{{ t.nav_faq }}</p>
@@ -277,6 +284,7 @@
     </details>
     {% endfor %}
   </section>
+  {% endif %}
   {% endif %}
 </main>
 {% endblock %}
