@@ -6,6 +6,7 @@ from typing import Any, Dict, List
 from flask import Flask, abort, render_template
 
 from crossplay_guide import CROSSPLAY_GUIDES
+from beginner_guide import BEGINNER_GUIDES
 from gameplay_guide import GAMEPLAY_GUIDES
 from price_guide import PRICE_GUIDES
 from tier_list_guide import TIER_LIST_GUIDES
@@ -1149,6 +1150,7 @@ PAGES = {
     "gameplay-guide": {"path": "/mistfall-hunter-gameplay/"},
     "crossplay-guide": {"path": "/mistfall-hunter-crossplay/"},
     "tier-list-guide": {"path": "/mistfall-hunter-tier-list/"},
+    "beginner-guide": {"path": "/mistfall-hunter-beginner-guide/"},
     "about": {"path": "/about/"},
     "contact": {"path": "/contact/"},
     "privacy-policy": {"path": "/privacy-policy/"},
@@ -1310,6 +1312,26 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         dict(link, url=localized_path(link["target"], locale))
         for link in tier_source_guide["related_links"]
     ]
+    beginner_source_guide = BEGINNER_GUIDES[locale]
+    beginner_guide = dict(beginner_source_guide)
+    beginner_guide["url"] = localized_path("beginner-guide", locale)
+    beginner_guide["feature_image"] = dict(beginner_source_guide["feature_image"])
+    beginner_guide["feature_image"]["source_url"] = localized_path("about", locale)
+    beginner_guide["sections"] = []
+    for source_section in beginner_source_guide["sections"]:
+        section = dict(source_section)
+        section_links = []
+        for source_link in source_section.get("links", []):
+            link = dict(source_link)
+            link["url"] = localized_path(source_link["target"], locale)
+            section_links.append(link)
+        if section_links:
+            section["links"] = section_links
+        beginner_guide["sections"].append(section)
+    beginner_guide["related_links"] = [
+        dict(link, url=localized_path(link["target"], locale))
+        for link in beginner_source_guide["related_links"]
+    ]
     price_guide["related_links"].append(
         {"url": localized_path("gameplay-guide", locale), "label": gameplay_source_guide["entry_label"]}
     )
@@ -1328,6 +1350,10 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
     crossplay_guide["related_links"].append(
         {"url": localized_path("tier-list-guide", locale), "label": tier_source_guide["entry_label"]}
     )
+    for guide in (price_guide, gameplay_guide, crossplay_guide, tier_list_guide):
+        guide["related_links"].append(
+            {"url": localized_path("beginner-guide", locale), "label": beginner_source_guide["entry_label"]}
+        )
     article_guide = None
     if page_key == "price-guide":
         article_guide = price_guide
@@ -1337,6 +1363,8 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         article_guide = crossplay_guide
     elif page_key == "tier-list-guide":
         article_guide = tier_list_guide
+    elif page_key == "beginner-guide":
+        article_guide = beginner_guide
     t = tr(locale)
     page_meta = {
         "classes": {
@@ -1367,6 +1395,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
             "meta_keywords": article_guide["meta_keywords"],
         }
     article_schema = None
+    faq_schema = None
     if article_guide:
         article_schema = {
             "@context": "https://schema.org",
@@ -1395,6 +1424,19 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
                 for item in article_guide["faq"]
             ],
         }
+        if page_key == "beginner-guide":
+            faq_schema = {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": item["question"],
+                        "acceptedAnswer": {"@type": "Answer", "text": item["answer"]},
+                    }
+                    for item in article_guide["faq"]
+                ],
+            }
     language_links = [
         {"code": code, "label": LOCALE_LABELS[code], "url": localized_path(page_key, code), "active": code == locale}
         for code in SUPPORTED_LANGUAGES
@@ -1413,9 +1455,11 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         "gameplay_guide": gameplay_guide,
         "crossplay_guide": crossplay_guide,
         "tier_list_guide": tier_list_guide,
+        "beginner_guide": beginner_guide,
         "page_image": article_guide["feature_image"]["path"] if article_guide else None,
         "page_image_url": f"{BASE_URL}/static/{article_guide['feature_image']['path']}" if article_guide else None,
         "article_schema": article_schema,
+        "faq_schema": faq_schema,
         "class_rows": localized_items(LOCALIZED_CLASS_ROWS, locale),
         "build_patterns": localized_items(LOCALIZED_BUILD_PATTERNS, locale),
         "faq_items": localized_items(FAQ_ITEMS, locale),

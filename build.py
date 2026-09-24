@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 
 from app import BASE_URL, PAGES, SUPPORTED_LANGUAGES, app, localized_path
+from beginner_guide import BEGINNER_GUIDES
 from gameplay_guide import GAMEPLAY_GUIDES
 from price_guide import PRICE_GUIDES
 from tier_list_guide import TIER_LIST_GUIDES
@@ -14,6 +15,7 @@ PAGE_LASTMOD = {
     "gameplay-guide": GAMEPLAY_GUIDES["en"]["checked_iso"],
     "crossplay-guide": "2026-08-15",
     "tier-list-guide": TIER_LIST_GUIDES["en"]["checked_iso"],
+    "beginner-guide": BEGINNER_GUIDES["en"]["checked_iso"],
 }
 
 
@@ -129,11 +131,11 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "llms.txt").write_text(
-        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, tier list, gameplay guide, crossplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Tier list: {BASE_URL}/mistfall-hunter-tier-list/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
+        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, beginner guide, tier list, gameplay guide, crossplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Beginner guide: {BASE_URL}/mistfall-hunter-beginner-guide/\n- Tier list: {BASE_URL}/mistfall-hunter-tier-list/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "llms-full.txt").write_text(
-        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay, platform crossplay, and launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-08-15\n",
+        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay, platform crossplay, beginner decisions, and launch-week loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nLast updated: 2026-09-24\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "favicon.ico").write_bytes(favicon_bytes())
@@ -152,6 +154,7 @@ def write_root_files() -> None:
         redirects.append(f"{prefix}/mistfall-hunter-gameplay {prefix}/mistfall-hunter-gameplay/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-crossplay {prefix}/mistfall-hunter-crossplay/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-tier-list {prefix}/mistfall-hunter-tier-list/ 301")
+        redirects.append(f"{prefix}/mistfall-hunter-beginner-guide {prefix}/mistfall-hunter-beginner-guide/ 301")
     (BUILD_DIR / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")
     (BUILD_DIR / "_worker.js").write_text(
         "export default {\n"
