@@ -1,5 +1,7 @@
 """提供 Mistfall Hunter 新手入门页的多语言文章数据。"""
 
+import re
+
 _FEATURE = "images/mistfall-hunter-beginner-guide-concept.webp"
 _COMBAT = "images/mistfall-hunter-steam-store-combat.webp"
 _EXTRACTION = "images/mistfall-hunter-steam-store-extraction.webp"
@@ -443,6 +445,108 @@ _LOCALIZED_EXTRAS = {
 _LOCALE_CONTENT.update(_LOCALIZED_EXTRAS)
 
 
+_LOCALIZED_COPY_REPAIRS = {
+    "es": {"replacements": {"error": "problema"}},
+    "pt": {
+        "fields": {
+            "faq_title": "Perguntas frequentes para começar em Mistfall Hunter",
+            "feature_alt": "Conceito editorial de um iniciante de Mistfall Hunter saindo do acampamento rumo a um portal de extração iluminado",
+            "feature_caption": "Conceito editorial independente de uma rota para iniciantes; não é uma captura de tela nem arte oficial do jogo.",
+        },
+        "replacements": {
+            "Arcanist com rota de reset": "Arcanist com rota de recuperação",
+            "reset": "recuperação",
+            "Reset": "Recuperação",
+        },
+    },
+    "it": {
+        "fields": {
+            "faq_title": "Domande frequenti per iniziare Mistfall Hunter",
+            "feature_alt": "Concept editoriale di un principiante di Mistfall Hunter che lascia il campo per un portale di estrazione luminoso",
+            "feature_caption": "Concept editoriale indipendente per un percorso da principiante; non è uno screenshot né un'immagine ufficiale del gioco.",
+        },
+        "replacements": {
+            "Arcanist con rotta di reset": "Arcanist con rotta di recupero",
+            "contatto, tieni, reset, estrai": "contatto, mantieni, riassetto, estrai",
+            "reset": "riassetto",
+            "Reset": "Riassetto",
+        },
+    },
+    "fr": {
+        "fields": {
+            "entry_label": "Bien débuter dans Mistfall Hunter",
+            "eyebrow": "Conseils pratiques pour vos cinq premières parties",
+            "title": "Mistfall Hunter : bien débuter en 5 parties, commandes et extractions sûres",
+            "meta_title": "Mistfall Hunter : débuter en 5 parties",
+            "faq_title": "Questions fréquentes pour débuter dans Mistfall Hunter",
+        },
+        "replacements": {
+            "Arcanist avec route de reset": "Arcanist avec route de repli",
+            "Pendant la partie : observer, s engager, reset": "Pendant la partie : observer, s'engager, se replier",
+            "Reset apres un cooldown perdu ou une formation brisee.": "Repliez-vous après un temps de recharge mal utilisé ou une formation rompue.",
+            "reset": "repli",
+            "Reset": "Repli",
+        },
+    },
+    "de": {
+        "fields": {
+            "entry_label": "Mistfall Hunter: Einsteigerleitfaden",
+            "title": "Mistfall Hunter: Leitfaden für die ersten 5 Runs, Steuerung und sichere Extraktion",
+            "meta_title": "Mistfall Hunter: Leitfaden für die ersten 5 Runs",
+            "faq_title": "Häufige Fragen zum Einstieg in Mistfall Hunter",
+            "checked_label": "Aktualisiert am 24.09.2026 · offizielle Website und Steam geprüft",
+        },
+        "replacements": {
+            "Planner-Guide": "Planer-Leitfaden",
+            "Reset-Route": "Route zum Neuaufstellen",
+            "Reset": "Neuaufstellung",
+            "reset": "Neuaufstellung",
+            "Guide": "Leitfaden",
+            "guide": "Leitfaden",
+            "Anfanger": "Anfänger",
+            "funf": "fünf",
+            "fur": "für",
+            "gepruft": "geprüft",
+            "Ausrustung": "Ausrüstung",
+            "unabhangig": "unabhängig",
+            "Ruckweg": "Rückweg",
+            "24. September 2026": "24.09.2026",
+        },
+    },
+    "ja": {"fields": {"faq_title": "Mistfall Hunter 初心者向けのよくある質問"}},
+    "ko": {
+        "fields": {"faq_title": "Mistfall Hunter 초보자를 위한 자주 묻는 질문"},
+        "replacements": {"App ID": "앱 ID"},
+    },
+}
+
+
+def _replace_locale_copy(value, replacements):
+    """
+    递归替换语言内容中指定的旧表达。
+
+    :param value: 字符串、列表或字典形式的语言内容
+    :param replacements: 旧表达与新表达组成的映射
+    :return: Any，替换后的语言内容
+    """
+    if isinstance(value, str):
+        for source, replacement in replacements.items():
+            if source.isalpha():
+                value = re.sub(rf"(?<!\w){re.escape(source)}(?!\w)", replacement, value)
+            else:
+                value = value.replace(source, replacement)
+        return value
+    if isinstance(value, list):
+        return [_replace_locale_copy(item, replacements) for item in value]
+    if isinstance(value, dict):
+        protected_keys = {"canonical", "file", "filename", "href", "id", "key", "path", "route", "slug", "src", "target", "url"}
+        return {
+            key: item if str(key).lower() in protected_keys else _replace_locale_copy(item, replacements)
+            for key, item in value.items()
+        }
+    return value
+
+
 def _copy_english_with_locale(locale: str) -> dict:
     """
     为缺少完整本地化正文的语言生成可审计的文章副本。
@@ -456,8 +560,11 @@ def _copy_english_with_locale(locale: str) -> dict:
         base["feature_image"] = dict(BEGINNER_GUIDES["en"]["feature_image"])
     localized = dict(_LOCALE_CONTENT.get(locale, {}))
     localized.update(_LOCALIZED_EXTRAS.get(locale, {}))
+    copy_repairs = _LOCALIZED_COPY_REPAIRS.get(locale, {})
+    localized.update(copy_repairs.get("fields", {}))
     for key, value in localized.items():
         base[key] = value
+    base = _replace_locale_copy(base, copy_repairs.get("replacements", {}))
     base["checked_iso"] = "2026-09-24"
     base["feature_image"] = dict(base["feature_image"])
     if locale != "en":
