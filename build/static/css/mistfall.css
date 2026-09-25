@@ -245,7 +245,6 @@ summary { cursor: pointer; font-weight: 850; }
   height: auto;
   object-fit: cover;
 }
-.article-feature img { aspect-ratio: 3 / 2; }
 .article-media img { aspect-ratio: 16 / 9; }
 figcaption {
   padding: .7rem .85rem;
