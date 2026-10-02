@@ -2,7 +2,7 @@
 
 {% block content %}
 <main>
-  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide", "tier-list-guide", "beginner-guide", "roadmap-guide"] %}
+  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide", "tier-list-guide", "beginner-guide", "roadmap-guide", "maps-guide"] %}
   <article class="article-page">
     <section class="article-hero">
       <div class="article-hero-copy">
@@ -77,6 +77,12 @@
             <figcaption>{{ section['image']['caption'] }} <a href="{{ section['image']['source_url'] }}" target="_blank" rel="noopener">{{ section['image']['source_label'] }}</a></figcaption>
           </figure>
           {% endif %}
+          {%- if section['video'] %}
+          <figure class="article-media article-video">
+            <iframe src="{{ section['video']['embed_url'] }}" title="{{ section['video']['title'] }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <figcaption>{{ section['video']['caption'] }} <a href="{{ section['video']['source_url'] }}" target="_blank" rel="noopener noreferrer">{{ section['video']['source_label'] }}</a></figcaption>
+          </figure>
+          {%- endif %}
         </section>
         {% endfor %}
 
@@ -106,7 +112,7 @@
           <h2 id="sources-heading">{{ price_guide['source_title'] }}</h2>
           <p>{{ price_guide['source_note'] }}</p>
           <ul>
-            {% for link in price_guide['official_links'] %}<li><a href="{{ link['url'] }}" target="_blank" rel="noopener">{{ link['label'] }}</a></li>{% endfor %}
+            {% for link in price_guide['official_links'] %}<li><a href="{{ link['url'] }}" target="_blank" rel="{{ link['rel'] if link['rel'] else 'noopener' }}">{{ link['label'] }}</a></li>{% endfor %}
           </ul>
         </section>
       </article>
@@ -262,6 +268,7 @@
       <p><a class="article-entry" href="{{ tier_list_guide['url'] }}">{{ tier_list_guide['entry_label'] }}</a></p>
       <p><a class="article-entry" href="{{ beginner_guide['url'] }}">{{ beginner_guide['entry_label'] }}</a></p>
       <p><a class="article-entry" href="{{ roadmap_guide['url'] }}">{{ roadmap_guide['entry_label'] }}</a></p>
+      <p><a class="article-entry" href="{{ map_guide['url'] }}">{{ map_guide['entry_label'] }}</a></p>
       {% endif %}
     </div>
     <div class="deep-guide">

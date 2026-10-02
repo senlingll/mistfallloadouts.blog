@@ -8,6 +8,7 @@ from flask import Flask, abort, render_template
 from crossplay_guide import CROSSPLAY_GUIDES
 from beginner_guide import BEGINNER_GUIDES
 from gameplay_guide import GAMEPLAY_GUIDES
+from maps_guide import MAPS_GUIDES, _GAMESRADAR_URL, _STEAM_NEWS_URL
 from price_guide import PRICE_GUIDES
 from roadmap_guide import ROADMAP_GUIDES
 from tier_list_guide import TIER_LIST_GUIDES
@@ -1153,6 +1154,7 @@ PAGES = {
     "tier-list-guide": {"path": "/mistfall-hunter-tier-list/"},
     "beginner-guide": {"path": "/mistfall-hunter-beginner-guide/"},
     "roadmap-guide": {"path": "/mistfall-hunter-roadmap/"},
+    "maps-guide": {"path": "/mistfall-hunter-maps/"},
     "about": {"path": "/about/"},
     "contact": {"path": "/contact/"},
     "privacy-policy": {"path": "/privacy-policy/"},
@@ -1352,6 +1354,38 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         dict(link, url=localized_path(link["target"], locale))
         for link in roadmap_source_guide["related_links"]
     ]
+    maps_source_guide = MAPS_GUIDES[locale]
+    maps_guide = dict(maps_source_guide)
+    maps_guide["url"] = localized_path("maps-guide", locale)
+    maps_guide["official_links"] = []
+    for source_link in maps_source_guide["official_links"]:
+        link = dict(source_link)
+        if "lootmap.gg" in link["url"] or "mistfallhunter.co" in link["url"]:
+            link["rel"] = "nofollow noopener"
+        else:
+            link["rel"] = "noopener"
+        maps_guide["official_links"].append(link)
+    maps_guide["official_links"].append(
+        {"label": maps_source_guide["patch_source_label"], "url": _STEAM_NEWS_URL, "rel": "noopener"}
+    )
+    maps_guide["official_links"].append(
+        {"label": maps_source_guide["area_source_label"], "url": _GAMESRADAR_URL, "rel": "noopener"}
+    )
+    maps_guide["sections"] = []
+    for source_section in maps_source_guide["sections"]:
+        section = dict(source_section)
+        section_links = []
+        for source_link in source_section.get("links", []):
+            link = dict(source_link)
+            link["url"] = localized_path(source_link["target"], locale)
+            section_links.append(link)
+        if section_links:
+            section["links"] = section_links
+        maps_guide["sections"].append(section)
+    maps_guide["related_links"] = [
+        dict(link, url=localized_path(link["target"], locale))
+        for link in maps_source_guide["related_links"]
+    ]
     price_guide["related_links"].append(
         {"url": localized_path("gameplay-guide", locale), "label": gameplay_source_guide["entry_label"]}
     )
@@ -1378,6 +1412,10 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         guide["related_links"].append(
             {"url": localized_path("roadmap-guide", locale), "label": roadmap_source_guide["entry_label"]}
         )
+    for guide in (gameplay_guide, beginner_guide):
+        guide["related_links"].append(
+            {"url": localized_path("maps-guide", locale), "label": maps_source_guide["entry_label"]}
+        )
     article_guide = None
     if page_key == "price-guide":
         article_guide = price_guide
@@ -1391,6 +1429,8 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         article_guide = beginner_guide
     elif page_key == "roadmap-guide":
         article_guide = roadmap_guide
+    elif page_key == "maps-guide":
+        article_guide = maps_guide
     t = tr(locale)
     page_meta = {
         "classes": {
@@ -1450,7 +1490,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
                 for item in article_guide["faq"]
             ],
         }
-        if page_key in {"beginner-guide", "roadmap-guide"}:
+        if page_key in {"beginner-guide", "roadmap-guide", "maps-guide"}:
             faq_schema = {
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
@@ -1483,6 +1523,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         "tier_list_guide": tier_list_guide,
         "beginner_guide": beginner_guide,
         "roadmap_guide": roadmap_guide,
+        "map_guide": maps_guide,
         "page_image": article_guide["feature_image"]["path"] if article_guide else None,
         "page_image_url": f"{BASE_URL}/static/{article_guide['feature_image']['path']}" if article_guide else None,
         "article_schema": article_schema,
