@@ -201,3 +201,12 @@ def build_site() -> None:
 if __name__ == "__main__":
     os.environ.setdefault("PYTHONIOENCODING", "utf-8")
     build_site()
+
+if __name__ == "__main__":
+    from pathlib import Path
+
+    _indexnow_root = Path(__file__).resolve().parent
+    _indexnow_source = _indexnow_root / "2ef0b31ed24d962befaae64e08e462b7.txt"
+    _indexnow_target = _indexnow_root / "build" / "2ef0b31ed24d962befaae64e08e462b7.txt"
+    _indexnow_target.parent.mkdir(parents=True, exist_ok=True)
+    _indexnow_target.write_bytes(_indexnow_source.read_bytes())
