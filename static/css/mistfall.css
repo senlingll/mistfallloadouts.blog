@@ -229,8 +229,9 @@ summary { cursor: pointer; font-weight: 850; }
   align-items: center;
   padding: 4.5rem 0 3rem;
 }
-.article-hero h1 { max-width: 20ch; font-size: 4.2rem; }
+.article-hero h1 { max-width: 20ch; font-size: 4.2rem; overflow-wrap: anywhere; }
 .article-hero-copy { min-width: 0; }
+.article-hero .lede { overflow-wrap: anywhere; }
 .article-feature, .article-media { margin: 0; }
 .article-feature {
   overflow: hidden;

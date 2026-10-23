@@ -11,6 +11,7 @@ from price_guide import PRICE_GUIDES
 from roadmap_guide import ROADMAP_GUIDES
 from tier_list_guide import TIER_LIST_GUIDES
 from player_count_guide import PLAYER_COUNT_GUIDES
+from trio_builds_guide import TRIO_BUILDS_GUIDES
 
 
 BUILD_DIR = Path("build")
@@ -24,6 +25,7 @@ PAGE_LASTMOD = {
     "maps-guide": MAPS_GUIDES["en"]["checked_iso"],
     "bosses-guide": BOSS_GUIDES["en"]["checked_iso"],
     "player-count-guide": PLAYER_COUNT_GUIDES["en"]["checked_iso"],
+    "trio-builds-guide": TRIO_BUILDS_GUIDES["en"]["checked_iso"],
 }
 
 
@@ -139,11 +141,11 @@ def write_root_files() -> None:
         encoding="utf-8",
     )
     (BUILD_DIR / "llms.txt").write_text(
-        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, beginner guide, tier list, gameplay and map guides, boss guide, player count guide, roadmap and update status, crossplay guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Beginner guide: {BASE_URL}/mistfall-hunter-beginner-guide/\n- Tier list: {BASE_URL}/mistfall-hunter-tier-list/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Maps guide: {BASE_URL}/mistfall-hunter-maps/\n- Boss guide: {BASE_URL}/mistfall-hunter-bosses/\n- Player count: {BASE_URL}/mistfall-hunter-player-count/\n- Roadmap: {BASE_URL}/mistfall-hunter-roadmap/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
+        f"# Mistfall Loadouts\n\nIndependent Mistfall Hunter loadout planner, class guide, beginner guide, tier list, gameplay and map guides, boss guide, player count guide, roadmap and update status, crossplay guide, trio builds guide, and build decision hub.\n\n- Homepage: {BASE_URL}/\n- Classes: {BASE_URL}/classes/\n- Builds: {BASE_URL}/builds/\n- Guide: {BASE_URL}/guide/\n- Beginner guide: {BASE_URL}/mistfall-hunter-beginner-guide/\n- Tier list: {BASE_URL}/mistfall-hunter-tier-list/\n- Gameplay guide: {BASE_URL}/mistfall-hunter-gameplay/\n- Maps guide: {BASE_URL}/mistfall-hunter-maps/\n- Boss guide: {BASE_URL}/mistfall-hunter-bosses/\n- Player count: {BASE_URL}/mistfall-hunter-player-count/\n- Trio builds guide: {BASE_URL}/mistfall-hunter-trio-builds/\n- Roadmap: {BASE_URL}/mistfall-hunter-roadmap/\n- Crossplay guide: {BASE_URL}/mistfall-hunter-crossplay/\n- Price guide: {BASE_URL}/mistfall-hunter-price/\n- Contact: {BASE_URL}/contact/\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "llms-full.txt").write_text(
-        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay, map areas and community atlas views, platform crossplay, boss preparation and safe extraction decisions, player-count context, the current roadmap and update status, beginner decisions, and loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nPlayer count guide: {BASE_URL}/mistfall-hunter-player-count/\nLast updated: 2026-10-18\n",
+        f"# Mistfall Loadouts Full Context\n\nMistfall Loadouts helps players understand Mistfall Hunter gameplay, map areas and community atlas views, platform crossplay, boss preparation and safe extraction decisions, player-count context, trio composition and communication, the current roadmap and update status, beginner decisions, and loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.\n\nCanonical domain: {BASE_URL}\nPlayer count guide: {BASE_URL}/mistfall-hunter-player-count/\nTrio builds guide: {BASE_URL}/mistfall-hunter-trio-builds/\nLast updated: 2026-10-24\n",
         encoding="utf-8",
     )
     (BUILD_DIR / "favicon.ico").write_bytes(favicon_bytes())
@@ -167,6 +169,7 @@ def write_root_files() -> None:
         redirects.append(f"{prefix}/mistfall-hunter-maps {prefix}/mistfall-hunter-maps/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-bosses {prefix}/mistfall-hunter-bosses/ 301")
         redirects.append(f"{prefix}/mistfall-hunter-player-count {prefix}/mistfall-hunter-player-count/ 301")
+        redirects.append(f"{prefix}/mistfall-hunter-trio-builds {prefix}/mistfall-hunter-trio-builds/ 301")
     (BUILD_DIR / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")
     (BUILD_DIR / "_worker.js").write_text(
         "export default {\n"
