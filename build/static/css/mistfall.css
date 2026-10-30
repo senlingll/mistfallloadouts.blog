@@ -221,7 +221,9 @@ details { margin-bottom: .75rem; }
 summary { cursor: pointer; font-weight: 850; }
 .article-page { padding-bottom: 4rem; }
 .article-hero {
-  width: min(1180px, calc(100% - 2rem));
+  width: min(1180px, calc(100vw - 2rem));
+  max-width: 100%;
+  min-width: 0;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(20rem, .95fr);
@@ -229,9 +231,9 @@ summary { cursor: pointer; font-weight: 850; }
   align-items: center;
   padding: 4.5rem 0 3rem;
 }
-.article-hero h1 { max-width: 20ch; font-size: 4.2rem; overflow-wrap: anywhere; }
+.article-hero h1 { max-width: 20ch; font-size: 4.2rem; overflow-wrap: anywhere; word-break: break-word; }
 .article-hero-copy { min-width: 0; }
-.article-hero .lede { overflow-wrap: anywhere; }
+.article-hero .lede { overflow-wrap: anywhere; word-break: break-word; }
 .article-feature, .article-media { margin: 0; }
 .article-feature {
   overflow: hidden;
@@ -254,7 +256,8 @@ figcaption {
 }
 figcaption a { color: var(--gold); }
 .article-layout {
-  width: min(900px, calc(100% - 2rem));
+  width: min(900px, calc(100vw - 2rem));
+  max-width: 100%;
   margin: 0 auto;
 }
 .article-main { min-width: 0; }
@@ -307,7 +310,8 @@ figcaption a { color: var(--gold); }
   .language-menu div { left: 0; right: auto; }
   .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 3rem; }
   .article-hero { grid-template-columns: 1fr; padding-top: 3rem; }
-  .article-hero h1 { max-width: 100%; font-size: 2.25rem; }
+  .article-hero h1 { max-width: 100%; font-size: 2.25rem; word-break: break-all; }
+  .article-hero .lede { word-break: break-all; }
   .planner-grid, dl, .card-grid { grid-template-columns: 1fr; }
   h1 { font-size: 2.55rem; }
 }

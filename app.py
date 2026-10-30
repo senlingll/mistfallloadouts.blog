@@ -16,6 +16,7 @@ from tier_list_guide import TIER_LIST_GUIDES
 from player_count_guide import PLAYER_COUNT_GUIDES
 from trio_builds_guide import TRIO_BUILDS_GUIDES
 from sword_shield_guide import SWORD_SHIELD_GUIDES
+from seer_build_guide import SEER_BUILD_GUIDES
 
 app = Flask(__name__)
 
@@ -1163,6 +1164,7 @@ PAGES = {
     "player-count-guide": {"path": "/mistfall-hunter-player-count/"},
     "trio-builds-guide": {"path": "/mistfall-hunter-trio-builds/"},
     "sword-shield-guide": {"path": "/mistfall-hunter-sword-and-shield-build/"},
+    "seer-build-guide": {"path": "/mistfall-hunter-seer-build/"},
     "about": {"path": "/about/"},
     "contact": {"path": "/contact/"},
     "privacy-policy": {"path": "/privacy-policy/"},
@@ -1471,9 +1473,32 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         dict(link, url=localized_path(link["target"], locale))
         for link in sword_source_guide["related_links"]
     ]
+    seer_source_guide = SEER_BUILD_GUIDES[locale]
+    seer_guide = dict(seer_source_guide)
+    seer_guide["url"] = localized_path("seer-build-guide", locale)
+    seer_guide["feature_image"] = dict(seer_source_guide["feature_image"])
+    seer_guide["sections"] = []
+    for source_section in seer_source_guide["sections"]:
+        section = dict(source_section)
+        section_links = []
+        for source_link in source_section.get("links", []):
+            link = dict(source_link)
+            link["url"] = localized_path(source_link["target"], locale)
+            section_links.append(link)
+        if section_links:
+            section["links"] = section_links
+        seer_guide["sections"].append(section)
+    seer_guide["related_links"] = [
+        dict(link, url=localized_path(link["target"], locale))
+        for link in seer_source_guide["related_links"]
+    ]
     for guide in (beginner_guide, trio_guide):
         guide["related_links"].append(
             {"url": sword_shield_guide["url"], "label": sword_source_guide["entry_label"]}
+        )
+    for guide in (beginner_guide, gameplay_guide, tier_list_guide, trio_guide, sword_shield_guide):
+        guide["related_links"].append(
+            {"url": seer_guide["url"], "label": seer_source_guide["entry_label"]}
         )
     price_guide["related_links"].append(
         {"url": localized_path("gameplay-guide", locale), "label": gameplay_source_guide["entry_label"]}
@@ -1540,6 +1565,8 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         article_guide = trio_guide
     elif page_key == "sword-shield-guide":
         article_guide = sword_shield_guide
+    elif page_key == "seer-build-guide":
+        article_guide = seer_guide
     t = tr(locale)
     page_meta = {
         "classes": {
@@ -1599,7 +1626,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
                 for item in article_guide["faq"]
             ],
         }
-        if page_key in {"beginner-guide", "roadmap-guide", "maps-guide", "bosses-guide", "player-count-guide", "trio-builds-guide", "sword-shield-guide"}:
+        if page_key in {"beginner-guide", "roadmap-guide", "maps-guide", "bosses-guide", "player-count-guide", "trio-builds-guide", "sword-shield-guide", "seer-build-guide"}:
             faq_schema = {
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
@@ -1637,6 +1664,7 @@ def common_context(page_key: str, locale: str) -> Dict[str, Any]:
         "player_count_guide": player_count_guide,
         "trio_guide": trio_guide,
         "sword_shield_guide": sword_shield_guide,
+        "seer_guide": seer_guide,
         "page_image": article_guide["feature_image"]["path"] if article_guide else None,
         "page_image_url": f"{BASE_URL}/static/{article_guide['feature_image']['path']}" if article_guide else None,
         "article_schema": article_schema,

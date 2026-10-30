@@ -1,9 +1,11 @@
 # Mistfall Loadouts Full Context
 
-Mistfall Loadouts helps players understand Mistfall Hunter gameplay, map areas and community atlas views, platform crossplay, boss preparation and safe extraction decisions, player-count context, trio composition and communication, the current roadmap and update status, beginner decisions, and loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.
+Mistfall Loadouts helps players understand Mistfall Hunter gameplay, map areas and community atlas views, platform crossplay, boss preparation and safe extraction decisions, player-count context, trio composition and communication, Seer class build decisions, the current roadmap and update status, beginner decisions, and loadouts by class role, weapon style, risk tolerance, and extraction goal. The site labels assumptions clearly and avoids claiming official hidden values.
 
 Canonical domain: https://mistfallloadouts.blog
 Player count guide: https://mistfallloadouts.blog/mistfall-hunter-player-count/
 Trio builds guide: https://mistfallloadouts.blog/mistfall-hunter-trio-builds/
-Last updated: 2026-10-24
+Seer build guide: https://mistfallloadouts.blog/mistfall-hunter-seer-build/
+Last updated: 2026-10-30
 Sword and shield build guide: https://mistfallloadouts.blog/mistfall-hunter-sword-and-shield-build/
+Seer build guide: https://mistfallloadouts.blog/mistfall-hunter-seer-build/

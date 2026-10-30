@@ -2,7 +2,7 @@
 
 {% block content %}
 <main>
-  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide", "tier-list-guide", "beginner-guide", "roadmap-guide", "maps-guide", "bosses-guide", "player-count-guide", "trio-builds-guide", "sword-shield-guide"] %}
+  {% if page_key in ["price-guide", "gameplay-guide", "crossplay-guide", "tier-list-guide", "beginner-guide", "roadmap-guide", "maps-guide", "bosses-guide", "player-count-guide", "trio-builds-guide", "sword-shield-guide", "seer-build-guide"] %}
   <article class="article-page">
     <section class="article-hero">
       <div class="article-hero-copy">
@@ -244,6 +244,7 @@
       {% endfor %}
     </div>
     <p><a class="article-entry" href="{{ sword_shield_guide['url'] }}">{{ sword_shield_guide['entry_label'] }}</a></p>
+    <p><a class="article-entry" href="{{ seer_guide['url'] }}">{{ seer_guide['entry_label'] }}</a></p>
   </section>
   {% endif %}
 
@@ -272,6 +273,7 @@
       <p><a class="article-entry" href="{{ map_guide['url'] }}">{{ map_guide['entry_label'] }}</a></p>
       <p><a class="article-entry" href="{{ player_count_guide['url'] }}">{{ player_count_guide['entry_label'] }}</a></p>
       <p><a class="article-entry" href="{{ sword_shield_guide['url'] }}">{{ sword_shield_guide['entry_label'] }}</a></p>
+      <p><a class="article-entry" href="{{ seer_guide['url'] }}">{{ seer_guide['entry_label'] }}</a></p>
       {% endif %}
     </div>
     <div class="deep-guide">
